@@ -17,12 +17,12 @@ use App\Http\Controllers\reset_password\resetcontroller;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:jwt')->get('/user', function (Request $request) {
     return $request->user();
-
 });
-Route::post('/authreg',[authApiController::class,'registerUser']);
-Route::post('/loginuser',[authApiController::class,'login']);
-Route::post('/logoutuser',[authApiController::class,'logout']);
-Route::post('/forgotpassword',[forgetpasswordcontroller::class, 'forgetpassword']);
-Route::post('/resetpswd',[resetcontroller::class, 'resetpassword']);
+
+Route::post('/register', [authApiController::class, 'register']);
+Route::post('/login', [authApiController::class, 'login']);
+Route::post('/logoutuser', [authApiController::class, 'logout']);
+Route::post('/forgotpassword', [forgetpasswordcontroller::class, 'forgetpassword']);
+Route::post('/resetpswd', [resetcontroller::class, 'resetpassword']);
