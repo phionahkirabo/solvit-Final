@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\reset_password;
 
 use App\Http\Controllers\Controller;
-use App\Models\resetpassword;
-use App\Models\User;
+use App\Models\Resetpassword;
+use App\Models\Hod;
 use Illuminate\Http\Request;
 
 class resetcontroller extends Controller
@@ -19,14 +19,14 @@ class resetcontroller extends Controller
     $code = $request->code;
     $email = $request->email;
     $password = $request->password;
-    $forgetModel = resetpassword::firstWhere('email',$email)->firstWhere('code',$code);
+    $forgetModel = Resetpassword::firstWhere('email',$email)->firstWhere('code',$code);
      if($forgetModel->created_at > now()->addHour()){
         $forgetModel->delete();
         return response()->json([
             'message'=> 'your code is expired, please generate another code'
         ],422);
      }
-     $userModel=User::firstWhere('email',$forgetModel->email);
+     $userModel=Hod::firstWhere('email',$forgetModel->email);
      $userModel->update([
         'password'=>bcrypt($password)
      ]);
