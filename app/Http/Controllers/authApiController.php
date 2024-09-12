@@ -65,10 +65,14 @@ class authApiController extends Controller
     $credentials = $request->only('email', 'password');
 
     if (!$token = JWTAuth::attempt($credentials)) {
+      
         return response()->json(['error' => 'Unauthorized'], 401);
     }
 
-    return response()->json(['token' => $token]);
+    return response()->json([ 
+        'user'=>Auth::user(),
+        'token' => $token]);
+
 }
     public function logout()
     {

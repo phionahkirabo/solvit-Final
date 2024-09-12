@@ -42,9 +42,18 @@ return [
         ],
 
         'api' => [
-        'driver' => 'jwt',
-        'provider' => 'hods',
-    ],
+            'driver' => 'jwt',
+            'provider' => 'users',
+        ],
+        'hod' => [
+            'driver' => 'jwt',
+            'provider' => 'hods',
+        ],
+        'employee' => [
+            'driver' => 'jwt',
+            'provider' => 'employees',
+        ],
+
 
     ],
 
@@ -67,8 +76,12 @@ return [
 
     'providers' => [
         'hods' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\Hod::class,
+            'driver' => 'eloquent',
+            'model' => App\Models\Hod::class,
+        ],
+        'employees' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Employee::class,
     ],
 
 

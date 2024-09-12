@@ -21,7 +21,7 @@ class employeesMiddleware
                 return response('Unauthorized.', 401);
             }
             else{
-                return redirect(url('login'));
+                return redirect(url('api/login'));
             }
         }
 

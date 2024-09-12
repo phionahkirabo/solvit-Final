@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\authApiController;
 use App\Http\Controllers\reset_password\forgetpasswordcontroller;
 use App\Http\Controllers\reset_password\resetcontroller;
+use App\Http\Controllers\codecheckcontroller;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +21,26 @@ use App\Http\Controllers\reset_password\resetcontroller;
 Route::middleware('auth:jwt')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::group([
+    'prefix'=>'hods',
+    'middleware'=>'hod',
+    function(){
+
+    }
+]
+);
+Route::group([
+    'prefix'=>'hods',
+    'middleware'=>'hod',
+    function(){
+
+    }
+]
+);
 
 Route::post('/register', [authApiController::class, 'register']);
 Route::post('/login', [authApiController::class, 'login']);
+Route::post('/code', [codecheckcontroller::class, 'codechecker']);
 Route::post('/logoutuser', [authApiController::class, 'logout']);
 Route::post('/forgotpassword', [forgetpasswordcontroller::class, 'forgetpassword']);
-Route::post('/resetpswd', [resetcontroller::class, 'resetpassword']);
+Route::post('/resetpsword', [resetcontroller::class, 'resetpassword']);
