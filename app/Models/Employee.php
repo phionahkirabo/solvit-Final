@@ -6,17 +6,19 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class Employee extends Authenticatable implements JWTSubject
 {
-   use HasFactory, Notifiable;
+   use HasFactory, Notifiable,HasApiTokens;
    
      protected $fillable = [
         'employee_name',
         'email',
         'contact_number',
         'position',
-        'hod_fk_id'
+        'hod_fk_id',
+        'personalemail',
         
     ];
 /**
@@ -25,7 +27,8 @@ class Employee extends Authenticatable implements JWTSubject
 * @var array
 */
 protected $hidden = [
-'password', 'remember_token',
+ 'password',
+ 'default_password'
 ];
 /**
 * Get the identifier that will be stored in the subject claim of the JWT.

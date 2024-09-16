@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\QueryException;
+use App\Models\Employee;
+
+
+use Illuminate\Support\Facades\Mail;
 use Exception;
 
 class authApiController extends Controller
@@ -85,5 +89,51 @@ class authApiController extends Controller
                 'message' => 'Logout failed: ' . $e->getMessage(),
             ], 500);
         }
+    }
+    public function addEmployee(Request $request)
+    {
+        $request->validate([
+            'employee_name' => 'required|string',
+            'email' => 'required|email|unique:employees,email',
+            'personalemail' => 'required|email',
+            'contact_number' => 'required',
+            'position' => 'required',
+        ]);
+
+        // Generate default password
+        $defaultPassword = str_random(8);
+
+        // Create employee
+        $employee = Employee::create([
+            'employee_name' => $request->employee_name,
+            'email' => $request->email,
+            'personalemail' => $request->personalemail,
+            'contact_number' => $request->contact_number,
+            'position' => $request->position,
+            'hod_fk_id' => auth()->id(), // Ensure the HOD ID is stored
+            'default_password' => Hash::make($defaultPassword), // Hash the default password
+        ]);
+
+        // Send email to employee with default password and link to set new password
+        Mail::to($request->personalemail)->send(new \App\Mail\EmployeeCreated($employee, $defaultPassword));
+
+        return response()->json([
+            'message' => 'Employee created successfully, email sent!',
+            'employee' => $employee
+        ], 201);
+    }
+     public function employeeLogin(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::guard('employee')->attempt($credentials)) {
+            $token = Auth::guard('employee')->user()->createToken('EmployeeToken')->plainTextToken;
+            return response()->json([
+                'token' => $token,
+                'message' => 'Login successful',
+            ], 200);
+        }
+
+        return response()->json(['message' => 'Invalid credentials'], 401);
     }
 }
