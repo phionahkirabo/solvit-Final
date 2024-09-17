@@ -12,21 +12,23 @@ class EmployeeCreated extends Mailable
 
     public $employee;
     public $defaultPassword;
+    public $verificationLink;
 
-    public function __construct(Employee $employee, $defaultPassword)
+    public function __construct($employee, $defaultPassword, $verificationLink)
     {
         $this->employee = $employee;
         $this->defaultPassword = $defaultPassword;
+        $this->verificationLink = $verificationLink;
     }
 
     public function build()
     {
-        return $this->view('emails.employeeCreated')
-            ->subject('Welcome to the Company')
-            ->with([
-                'employee' => $this->employee,
-                'defaultPassword' => $this->defaultPassword,
-                'verificationLink' => url('/api/employee/verify', $this->employee->id)
-            ]);
+        return $this->view('emails.employee-created')
+                    ->subject('Welcome to the Company')
+                    ->with([
+                        'employee' => $this->employee,
+                        'defaultPassword' => $this->defaultPassword,
+                        'verificationLink' => $this->verificationLink,
+                    ]);
     }
 }

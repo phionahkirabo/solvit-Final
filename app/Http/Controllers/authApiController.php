@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\QueryException;
 use App\Models\Employee;
-
-
 use Illuminate\Support\Facades\Mail;
+use App\Mail\EmployeeCreated;
+use Illuminate\Support\Str;
 use Exception;
 
 class authApiController extends Controller
@@ -65,43 +65,55 @@ class authApiController extends Controller
         }
     }
 
-    public function login(Request $request) {
-    $credentials = $request->only('email', 'password');
+   public function login(Request $request)
+        {
+            $credentials = $request->only('email', 'password');
 
-    if (!$token = JWTAuth::attempt($credentials)) {
-      
-        return response()->json(['error' => 'Unauthorized'], 401);
-    }
+            // Check if the user is a HOD
+            if (!$token = auth('hod')->attempt($credentials)) {
+                // If login as HOD fails, check if the user is an employee
+                if (!$token = auth('employee')->attempt($credentials)) {
+                    // If login as employee fails, return unauthorized
+                    return response()->json(['error' => 'Unauthorized'], 401);
+                }
+            }
 
-    return response()->json([ 
-        'user'=>Auth::user(),
-        'token' => $token]);
-
-}
-    public function logout()
-    {
-        try {
-            Auth::guard('api')->logout();
-            return response()->json(['message' => 'You have logged out successfully']);
-        } catch (Exception $e) {
+            // Return user info and token after successful login
             return response()->json([
-                'status' => 'error',
-                'message' => 'Logout failed: ' . $e->getMessage(),
-            ], 500);
+                'status' => 'success',
+                'user' => Auth::user(), // This will return the logged-in user
+                'authorization' => [
+                    'token' => $token,
+                    'type' => 'bearer',
+                ]
+            ]);
         }
-    }
-    public function addEmployee(Request $request)
+
+    public function logout()
+        {
+            try {
+                Auth::guard('api')->logout();
+                return response()->json(['message' => 'You have logged out successfully']);
+            } catch (Exception $e) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Logout failed: ' . $e->getMessage(),
+                ], 500);
+            }
+        }
+   public function addEmployee(Request $request)
     {
         $request->validate([
-            'employee_name' => 'required|string',
-            'email' => 'required|email|unique:employees,email',
-            'personalemail' => 'required|email',
-            'contact_number' => 'required',
-            'position' => 'required',
+            'employee_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:employees,email|max:255',
+            'personalemail' => 'required|email|max:255',
+            'contact_number' => 'required|numeric|min:10',
+            'position' => 'required|string|max:255',
+            'hod_fk_id' => 'required|exists:hods,id', 
         ]);
 
         // Generate default password
-        $defaultPassword = str_random(8);
+        $defaultPassword = Str::random(8);
 
         // Create employee
         $employee = Employee::create([
@@ -114,16 +126,62 @@ class authApiController extends Controller
             'default_password' => Hash::make($defaultPassword), // Hash the default password
         ]);
 
-        // Send email to employee with default password and link to set new password
-        Mail::to($request->personalemail)->send(new \App\Mail\EmployeeCreated($employee, $defaultPassword));
+        // Send email to employee with default password and link to set a new password
+        $verificationLink = route('employee.verify.default.password', ['email' => $employee->personalemail]);
+
+        Mail::to($employee->personalemail)->send(new EmployeeCreated($employee, $defaultPassword, $verificationLink));
 
         return response()->json([
             'message' => 'Employee created successfully, email sent!',
             'employee' => $employee
         ], 201);
     }
-     public function employeeLogin(Request $request)
+    public function verifyDefaultPassword(Request $request)
     {
+        $request->validate([
+            'email' => 'required|email',
+            'default_password' => 'required|string',
+        ]);
+
+        $employee = Employee::where('email', $request->email)->first();
+
+        if (!$employee || !Hash::check($request->default_password, $employee->default_password)) {
+            return response()->json(['message' => 'Invalid default password'], 401);
+        }
+
+        return response()->json(['message' => 'Default password verified successfully'], 200);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'default_password' => 'required|string',
+            'new_password' => 'required|string|confirmed|min:6',
+        ]);
+
+        $employee = Employee::where('email', $request->email)->first();
+
+        // Check if the default password is valid
+        if (!$employee || !Hash::check($request->default_password, $employee->default_password)) {
+            return response()->json(['message' => 'Invalid default password'], 401);
+        }
+
+        // Update the employee's password
+        $employee->update([
+            'password' => Hash::make($request->new_password),
+            'default_password' => null, // Remove default password once reset
+        ]);
+
+        return response()->json(['message' => 'Password reset successful, please log in'], 200);
+    }
+    public function employeeLogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
         $credentials = $request->only('email', 'password');
 
         if (Auth::guard('employee')->attempt($credentials)) {
@@ -136,4 +194,7 @@ class authApiController extends Controller
 
         return response()->json(['message' => 'Invalid credentials'], 401);
     }
+
+
 }
+

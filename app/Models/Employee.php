@@ -19,6 +19,7 @@ class Employee extends Authenticatable implements JWTSubject
         'position',
         'hod_fk_id',
         'personalemail',
+        'default_password'
         
     ];
 /**
