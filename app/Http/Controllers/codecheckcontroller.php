@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Resetpassword;
 use Carbon\Carbon; // Import Carbon for date and time handling
 
-class CodeCheckController extends Controller
+class codecheckcontroller extends Controller
 {
     public function codeChecker(Request $req)
     {

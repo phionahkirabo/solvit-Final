@@ -42,4 +42,3 @@ class hodMiddleware
         return $next($request);
     }
 }
-SS

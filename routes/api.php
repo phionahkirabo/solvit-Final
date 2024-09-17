@@ -54,4 +54,3 @@ Route::post('/resetpsword', [resetcontroller::class, 'resetpassword']);
 // Employee API routes
 Route::post('/employee/verify/{id}', [EmployeeController::class, 'verifyDefaultPassword']);
 Route::post('/employee/login', [AuthController::class, 'employeeLogin']);
-SSSSS
