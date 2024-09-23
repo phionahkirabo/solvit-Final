@@ -2,7 +2,7 @@
 
 namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject; 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -49,4 +49,10 @@ public function getJWTCustomClaims()
 {
 return [];
 }
+
+  public function hod()
+    {
+        return $this->belongsTo(Hod::class, 'hod_fk_id');
+    }
+
 }

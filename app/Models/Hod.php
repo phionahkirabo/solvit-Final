@@ -28,4 +28,12 @@ class Hod extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password',
     ];
+    
+    // Define the relationship to employees
+    public function employees()
+    {
+        return $this->hasMany(Employee::class, 'hod_fk_id');
+    }
+
+
 }

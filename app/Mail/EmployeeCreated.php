@@ -23,7 +23,7 @@ class EmployeeCreated extends Mailable
 
     public function build()
     {
-        return $this->view('emails.employee-created')
+        return $this->view('email.employee-created')
                     ->subject('Welcome to the Company')
                     ->with([
                         'employee' => $this->employee,

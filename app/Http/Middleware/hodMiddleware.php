@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Support\Facades\Auth;
 use Closure;
+
 use Illuminate\Http\Request;
 
 class hodMiddleware
@@ -17,7 +18,7 @@ class hodMiddleware
             }
 
             // Otherwise, redirect to the HOD login page
-            return redirect()->route('hod.login'); // You may adjust the login route if necessary
+            return response()->json(['message' => 'You should login again'], 401); // You may adjust the login route if necessary
         }
 
         return $next($request);
