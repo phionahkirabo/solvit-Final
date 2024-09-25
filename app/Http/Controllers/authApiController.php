@@ -186,7 +186,7 @@ class authApiController extends Controller
         $request->validate([
             'email' => 'required|string|email', // Validate email format
             'default_password' => 'required|string', // Ensure default_password is provided
-            'new_password' => 'required|string|confirmed|min:6', // Confirm new_password with new_password_confirmation
+            'new_password' => 'required|string|min:6', // Confirm new_password with new_password_confirmation
         ]);
 
         // Retrieve the employee by their email
