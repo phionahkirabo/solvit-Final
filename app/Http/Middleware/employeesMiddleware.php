@@ -19,7 +19,7 @@ class employeesMiddleware
     public function handle(Request $request, Closure $next, $guard = null)
     {
         // Check if the employee is not authenticated
-        if (Auth::guard('employees')->guest()) {
+        if (Auth::guard('employee')->guest()) {
             // If the request expects JSON or is an AJAX request
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json(['message' => 'Unauthorized'], 401);
