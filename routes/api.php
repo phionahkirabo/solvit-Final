@@ -24,6 +24,8 @@ Route::prefix('employees')->middleware('employee')->group(function () {
 });
 //  Route::post('/employeelogin', [authApiController::class, 'employeeLogin']);
  Route::post('/employees-verify-default-password', [authApiController::class, 'verifyDefaultPassword']);
+ Route::get('/allhods', [authApiController::class, 'allhods']);
+
  Route::post('/employee-reset-password/{default_password}', [authApiController::class, 'employeeResetPassword']);
 
 // Authentication and other routes

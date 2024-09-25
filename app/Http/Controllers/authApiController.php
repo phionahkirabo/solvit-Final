@@ -110,7 +110,10 @@ class authApiController extends Controller
             // If both login attempts fail, return unauthorized
             return response()->json(['error' => 'Wrong credentials'], 401);
         }
-
+    public function allhods() {
+        $data=Hod::all();
+        return response()->json(['hods users'=>$data], 200);
+    }
 
     public function logout()
         {
