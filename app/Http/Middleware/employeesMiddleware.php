@@ -25,7 +25,7 @@ class employeesMiddleware
                 return response()->json(['message' => 'Unauthorized'], 401);
             } else {
                 // If it's a normal request, redirect to the login page
-                return redirect(url('api/login'));
+                return response()->json(['message' => 'You should login again'], 401);
             }
         }
 
