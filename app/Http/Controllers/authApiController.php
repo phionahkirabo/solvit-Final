@@ -17,16 +17,117 @@ use App\Mail\EmployeeCreated;
 use Illuminate\Support\Str;
 use Exception;
 
-
 class authApiController extends Controller
 {
+        /**
+     * @OA\Info(title="AQS-TRACKING", version="1.0.0")
+     *
+     * @OA\Get(
+     *     path="/api/allhods",
+     *     security={{"Bearer": {}}},
+     *     summary="fetch all hods",
+     *     @OA\Response(
+     *         response="200",
+     *         description="Successful response"
+     *     )
+     * )
+     */
+    public function allhods() {
+        $data=Hod::all();
+        return response()->json(['hods users'=>$data], 200);
+    }
+
+    /**
+     * @OA\Post(
+     *      path="/api/register",
+     *      security={{"Bearer": {}}},
+     *      operationId="registerUser",
+     *      tags={"Authentication"},
+     *      summary="Register a new user",
+     *      description="Register a new user and return the inserted data",
+     *      @OA\Parameter(
+     *          name="hod_name",
+     *          description="enter hod name",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="email",
+     *          description="User's email",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="contact_number",
+     *          description="User's contact number",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="password",
+     *          description="enter password",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="password_confirmation",
+     *          description="enter repeat password",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="User successfully registered",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="hod_name", type="string", example="kirabo phionah"),
+     *              @OA\Property(property="email", type="string", example="kirabo@gmail.com"),
+     *              @OA\Property(property="contact_number", type="string", example="0785643266"),
+     *              @OA\Property(property="password", type="string", example="123@we"),
+     *              @OA\Property(property="password_confirmation", type="string", example="123@we")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad user input"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource not found"
+     *      )
+     * )
+     */
+
     public function register(Request $request)
     {
         // Validate the request data (Laravel will handle validation errors)
         $validatedData = $request->validate([
             'hod_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:hods',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:6|confirmed',
             'contact_number' => 'required|string|min:10',
         ]);
 
@@ -61,12 +162,74 @@ class authApiController extends Controller
             ], 500);
         } catch (Exception $e) {
             // Handle other general exceptions
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Something went wrong: ' . $e->getMessage(),
-            ], 500);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User created successfully',
+            'user' => $user,
+            'authorization' => [
+                'token' => $token,
+                'type' => 'bearer',
+            ]
+        ], 201); // Set the status code to 201
+
         }
     }
+    /**
+     * @OA\Post(
+     *      path="/api/login",
+     *      security={{"Bearer": {}}},
+     *      operationId="loginUser",
+     *      tags={"Authentication"},
+     *      summary="Login user",
+     *      description="Authenticate a user and return a token",
+     *      @OA\Parameter(
+     *          name="email",
+     *          description="User's email",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              format="email"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="password",
+     *          description="User's password",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      
+     *      @OA\Response(
+     *          response=200,
+     *          description="User successfully logged in",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="status", type="string", example="success"),
+     *              @OA\Property(property="user", type="object",
+     *                  
+     *               
+     *                  @OA\Property(property="email", type="string", example="kirabo@gmail.com"),
+     *                  @OA\Property(property="password", type="string", example="0785643266")
+     *              ),
+     *              @OA\Property(property="authorization", type="object",
+     *                  @OA\Property(property="token", type="string", example="your-jwt-token"),
+     *                  @OA\Property(property="type", type="string", example="bearer")
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized: Wrong credentials"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     * )
+     */
 
     public function login(Request $request)
         {
@@ -110,10 +273,7 @@ class authApiController extends Controller
             // If both login attempts fail, return unauthorized
             return response()->json(['error' => 'Wrong credentials'], 401);
         }
-    public function allhods() {
-        $data=Hod::all();
-        return response()->json(['hods users'=>$data], 200);
-    }
+    
 
     public function logout()
         {
@@ -127,6 +287,111 @@ class authApiController extends Controller
                 ], 500);
             }
         }
+    /**
+     * @OA\Post(
+     *      path="/api/hods/employee/create",
+     *      security={{"Bearer": {}}},
+     *      operationId="addEmployee",
+     *      tags={"Employee Management"},
+     *      summary="Add a new employee",
+     *      description="Create a new employee and send an email with a default password",
+     *      @OA\Parameter(
+     *          name="employee_name",
+     *          description="Employee's name",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              maxLength=255
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="email",
+     *          description="Employee's company email (must be unique)",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              format="email",
+     *              maxLength=255
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="personalemail",
+     *          description="Employee's personal email",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              format="email",
+     *              maxLength=255
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="contact_number",
+     *          description="Employee's contact number",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              minLength=10
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="position",
+     *          description="Employee's position",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              maxLength=255
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="hod_fk_id",
+     *          description="ID of the HOD creating the employee",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="Employee successfully created and email sent",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="message", type="string", example="Employee created successfully, email sent!"),
+     *              @OA\Property(property="employee", type="object",
+     *                  
+     *                  @OA\Property(property="employee_name", type="string", example="kirabo"),
+     *                  @OA\Property(property="email", type="string", example="pk@gmail.com"),
+     *                  @OA\Property(property="personalemail", type="string", example="phionahk1@gmail.com"),
+     *                  @OA\Property(property="contact_number", type="string", example="0785643266"),
+     *                  @OA\Property(property="position", type="string", example="Software Developer"),
+     *                  @OA\Property(property="hod_fk_id", type="integer", example=18)
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad user input"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource not found"
+     *      )
+     * )
+     */
+
  public function addEmployee(Request $request)
 {
     $request->validate([
