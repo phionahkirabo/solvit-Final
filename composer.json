@@ -8,6 +8,7 @@
         "php": "^8.0.2",
         "barryvdh/laravel-cors": "^3.0",
         "darkaonline/l5-swagger": "^8.6",
+        "fideloper/proxy": "^4.4",
         "guzzlehttp/guzzle": "^7.2",
         "illuminate/auth": "*",
         "laravel/framework": "^9.19",

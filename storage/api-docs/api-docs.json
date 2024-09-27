@@ -351,6 +351,143 @@
                     }
                 ]
             }
+        },
+        "/api/employees-verify-default-password": {
+            "post": {
+                "tags": [
+                    "Employee Authentication"
+                ],
+                "summary": "Verify Employee's default password",
+                "description": "Verify the default password for an employee during the initial login process",
+                "operationId": "verifyDefaultPassword",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Employee's company email",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "email"
+                        }
+                    },
+                    {
+                        "name": "default_password",
+                        "in": "query",
+                        "description": "The default password sent to the employee",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Default password verified successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "email": {
+                                            "type": "string",
+                                            "example": "pk@gmail.com"
+                                        },
+                                        "default_password": {
+                                            "type": "string",
+                                            "example": "235jjlkh="
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad user input"
+                    },
+                    "404": {
+                        "description": "Employee not found"
+                    }
+                }
+            }
+        },
+        "/api/employees/reset-password": {
+            "post": {
+                "tags": [
+                    "Employee Authentication"
+                ],
+                "summary": "Reset Employee's password",
+                "description": "Allows an employee to reset their password by providing their email, default password, and new password",
+                "operationId": "employeeResetPassword",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Employee's company email",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "email"
+                        }
+                    },
+                    {
+                        "name": "default_password",
+                        "in": "query",
+                        "description": "Employee's default password",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "new_password",
+                        "in": "query",
+                        "description": "The new password the employee wants to set",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "minLength": 6
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Password updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string",
+                                            "example": "Password updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Incorrect email or default password",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Incorrect email or default password"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad user input"
+                    }
+                }
+            }
         }
     },
     "tags": [
@@ -361,6 +498,10 @@
         {
             "name": "Employee Management",
             "description": "Employee Management"
+        },
+        {
+            "name": "Employee Authentication",
+            "description": "Employee Authentication"
         }
     ],
     "components": {

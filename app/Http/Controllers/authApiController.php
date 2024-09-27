@@ -9,6 +9,7 @@ use App\Models\Hod;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Mail;
@@ -428,21 +429,133 @@ class authApiController extends Controller
     ], 201);
 }
 
+    /**
+     * @OA\Post(
+     *      path="/api/employees-verify-default-password",
+     *      operationId="verifyDefaultPassword",
+     *      tags={"Employee Authentication"},
+     *      summary="Verify Employee's default password",
+     *      description="Verify the default password for an employee during the initial login process",
+     *      @OA\Parameter(
+     *          name="email",
+     *          description="Employee's company email",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              format="email"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="default_password",
+     *          description="The default password sent to the employee",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Default password verified successfully",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="email", type="string", example="pk@gmail.com"),
+     *                  @OA\Property(property="default_password", type="string", example="235jjlkh="),
+     *          )
+     *      ),
+     * 
+     *      
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad user input"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Employee not found"
+     *      )
+     * )
+     */
+
  public function verifyDefaultPassword(Request $request)
     {
+        Log::info('Verifying default password', ['request' => $request->all()]);
+
         $request->validate([
             'email' => 'required|email',
             'default_password' => 'required|string',
         ]);
 
         $employee = Employee::where('email', $request->email)->first();
+        Log::info('Employee retrieved', ['employee' => $employee]);
 
         if (!$employee || !Hash::check($request->default_password, $employee->default_password)) {
+            Log::warning('Invalid password attempt', ['email' => $request->email]);
             return response()->json(['message' => 'Invalid default password'], 401);
         }
 
+        Log::info('Default password verified successfully', ['email' => $request->email]);
         return response()->json(['message' => 'Default password verified successfully'], 200);
     }
+     
+        /**
+     * @OA\Post(
+     *      path="/api/employees/reset-password",
+     *      operationId="employeeResetPassword",
+     *      tags={"Employee Authentication"},
+     *      summary="Reset Employee's password",
+     *      description="Allows an employee to reset their password by providing their email, default password, and new password",
+     *      @OA\Parameter(
+     *          name="email",
+     *          description="Employee's company email",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              format="email"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="default_password",
+     *          description="Employee's default password",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="new_password",
+     *          description="The new password the employee wants to set",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              minLength=6
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Password updated successfully",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="success", type="string", example="Password updated successfully")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Incorrect email or default password",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="error", type="string", example="Incorrect email or default password")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad user input"
+     *      )
+     * )
+     */
 
  public function employeeResetpassword(Request $request)
     {
