@@ -408,10 +408,15 @@
                     "404": {
                         "description": "Employee not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
             }
         },
-        "/api/employees/reset-password": {
+        "/api/employee-reset-password/{default_password}": {
             "post": {
                 "tags": [
                     "Employee Authentication"
@@ -457,25 +462,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "success": {
+                                        "email": {
                                             "type": "string",
-                                            "example": "Password updated successfully"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Incorrect email or default password",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
+                                            "example": "pk@gmail.com"
+                                        },
+                                        "default_password": {
                                             "type": "string",
-                                            "example": "Incorrect email or default password"
+                                            "example": "235jjlkh="
+                                        },
+                                        "new_password": {
+                                            "type": "string",
+                                            "example": "235jjlkh=1"
                                         }
                                     },
                                     "type": "object"
@@ -485,8 +482,22 @@
                     },
                     "400": {
                         "description": "Bad user input"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
             }
         }
     },

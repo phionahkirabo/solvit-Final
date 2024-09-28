@@ -432,6 +432,7 @@ class authApiController extends Controller
     /**
      * @OA\Post(
      *      path="/api/employees-verify-default-password",
+     *      security={{"Bearer": {}}},
      *      operationId="verifyDefaultPassword",
      *      tags={"Employee Authentication"},
      *      summary="Verify Employee's default password",
@@ -461,7 +462,7 @@ class authApiController extends Controller
      *          @OA\JsonContent(
      *              type="object",
      *              @OA\Property(property="email", type="string", example="pk@gmail.com"),
-     *                  @OA\Property(property="default_password", type="string", example="235jjlkh="),
+     *              @OA\Property(property="default_password", type="string", example="235jjlkh="),
      *          )
      *      ),
      * 
@@ -500,7 +501,8 @@ class authApiController extends Controller
      
         /**
      * @OA\Post(
-     *      path="/api/employees/reset-password",
+     *      path="/api/employee-reset-password/{default_password}",
+     *      security={{"Bearer": {}}},
      *      operationId="employeeResetPassword",
      *      tags={"Employee Authentication"},
      *      summary="Reset Employee's password",
@@ -539,20 +541,27 @@ class authApiController extends Controller
      *          description="Password updated successfully",
      *          @OA\JsonContent(
      *              type="object",
-     *              @OA\Property(property="success", type="string", example="Password updated successfully")
+     *             @OA\Property(property="email", type="string", example="pk@gmail.com"),
+     *              @OA\Property(property="default_password", type="string", example="235jjlkh="),
+     *              @OA\Property(property="new_password", type="string", example="235jjlkh=1"),
      *          )
      *      ),
-     *      @OA\Response(
-     *          response=404,
-     *          description="Incorrect email or default password",
-     *          @OA\JsonContent(
-     *              type="object",
-     *              @OA\Property(property="error", type="string", example="Incorrect email or default password")
-     *          )
-     *      ),
+     *      
      *      @OA\Response(
      *          response=400,
      *          description="Bad user input"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource not found"
      *      )
      * )
      */
