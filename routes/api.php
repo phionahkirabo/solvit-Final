@@ -31,10 +31,13 @@ Route::prefix('employees')->middleware('employee')->group(function () {
 // Authentication and other routes
 Route::post('/register', [authApiController::class, 'register']);
 Route::post('/login', [authApiController::class, 'login'])->name('login-user');
-Route::post('/code', [codecheckcontroller::class, 'codechecker']);
+
 Route::post('/logoutuser', [authApiController::class, 'logout']);
-Route::post('/forgotpassword', [forgetpasswordcontroller::class, 'forgetpassword']);
-Route::post('/resetpsword', [resetcontroller::class, 'resetpassword']);
+
+Route::post('forgot-password', [authApiController::class, 'forgotPassword']);
+Route::post('verify-code', [authApiController::class, 'verifyCode']);
+Route::post('reset-password/{code}', [authApiController::class, 'resetPassword']);
+
 
 
 
