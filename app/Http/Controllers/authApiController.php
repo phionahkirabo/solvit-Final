@@ -275,6 +275,65 @@ class authApiController extends Controller
             return response()->json(['error' => 'Wrong credentials'], 401);
         }
     
+    public function forgotPassword(Request $request)
+        {
+            $request->validate(['email' => 'required|email']);
+
+            $user = Hod::where('email', $request->email)->first() ?: Employee::where('email', $request->email)->first();
+
+            if (!$user) {
+                return response()->json(['message' => 'User not found'], 404);
+            }
+
+            // Generate a random verification code
+            $verificationCode = rand(100000, 999999);
+
+            // Save the verification code (either in the password_resets table or directly in the user model)
+            $user->verification_code = $verificationCode;
+            $user->save();
+
+            // Send the verification code to the user’s email
+            Mail::to($user->email)->send(new ForgotPasswordMail($verificationCode));
+
+            return response()->json(['message' => 'Verification code sent'], 200);
+        }
+    public function verifyCode(Request $request)
+        {
+            $request->validate([
+                'email' => 'required|email',
+                'verification_code' => 'required|string',
+            ]);
+
+            $user = Hod::where('email', $request->email)->first() ?: Employee::where('email', $request->email)->first();
+
+            if (!$user || $user->verification_code !== $request->verification_code) {
+                return response()->json(['message' => 'Invalid verification code'], 401);
+            }
+
+            return response()->json(['message' => 'Verification code verified successfully'], 200);
+        }
+    public function resetPassword(Request $request)
+        {
+            $request->validate([
+                'email' => 'required|email',
+                'verification_code' => 'required|string',
+                'password' => 'required|string|confirmed|min:6',
+            ]);
+
+            $user = Hod::where('email', $request->email)->first() ?: Employee::where('email', $request->email)->first();
+
+            if (!$user || $user->verification_code !== $request->verification_code) {
+                return response()->json(['message' => 'Invalid verification code'], 401);
+            }
+
+            // Update the user’s passw
+            $user->password = Hash::make($request->password);
+            $user->verification_code = null; // Clear the verification code after successful reset
+            $user->save();
+
+            return response()->json(['message' => 'Password reset successfully'], 200);
+        }
+
 
     public function logout()
         {
