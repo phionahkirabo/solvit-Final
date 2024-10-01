@@ -6,6 +6,8 @@ use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Request;
 // use Illuminate\Http\Request;
 use App\Models\Hod;
+use App\Notifications\ResetPassword;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -247,7 +249,7 @@ class authApiController extends Controller
             $credentialsHod = $request->only('email', 'password');
 
             // Employee login credentials (uses default_password)
-            $credentialsEmployee = $request->only('email', 'default_password');
+            $credentialsEmployee = $request->only('email','default_password');
 
             // Attempt to login as HOD
             if ($token = auth('hod')->attempt($credentialsHod)) {
@@ -277,8 +279,10 @@ class authApiController extends Controller
             return response()->json(['error' => 'Wrong credentials'], 401);
         }
     
+
     public function forgotPassword(Request $request)
     {
+     
         // Validate email field
         $request->validate(['email' => 'required|email']);
 
@@ -294,9 +298,9 @@ class authApiController extends Controller
         $hod->verification_code = $verificationCode;
         $hod->save();
 
-        // Send verification code via email
+        // Send verification code via notification
         try {
-            Mail::to($hod->email)->send(new ForgotPasswordMail($verificationCode));
+            $hod->notify(new ResetPassword($verificationCode));
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to send email'], 500);
         }
@@ -349,6 +353,7 @@ class authApiController extends Controller
 
         return response()->json(['message' => 'Password reset successfully'], 200);
     }
+
 
     public function logout()
         {
