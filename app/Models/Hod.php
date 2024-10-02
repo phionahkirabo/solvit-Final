@@ -22,7 +22,7 @@ class Hod extends Authenticatable implements JWTSubject
     }
 
     protected $fillable = [
-        'hod_name', 'email', 'contact_number', 'password',
+        'hod_name', 'email', 'contact_number', 'password','verification_code',
     ];
 
     protected $hidden = [
