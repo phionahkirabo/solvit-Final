@@ -254,7 +254,7 @@ class authApiController extends Controller
             // Attempt to login as HOD
             if ($token = auth('hod')->attempt($credentialsHod)) {
                 return response()->json([
-                    'status' => 'Hod login successfully',
+                    'status' => 'Hod logged in successfully',
                     'user' => auth('hod')->user(),
                     'authorization' => [
                         'token' => $token,
@@ -266,7 +266,7 @@ class authApiController extends Controller
             // Attempt to login as Employee
             if ($token = auth('employee')->attempt($credentialsEmployee)) {
                 return response()->json([
-                    'status' => 'Employee login successfully',
+                    'status' => 'Employee logged in successfully',
                     'user' => auth('employee')->user(),
                     'authorization' => [
                         'token' => $token,

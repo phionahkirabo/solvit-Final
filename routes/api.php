@@ -32,7 +32,7 @@ Route::prefix('employees')->middleware('employee')->group(function () {
 Route::post('/register', [authApiController::class, 'register']);
 Route::post('/login', [authApiController::class, 'login'])->name('login-user');
 
-Route::post('/logoutuser', [authApiController::class, 'logout']);
+Route::post('/logout', [authApiController::class, 'logout']);
 
 Route::post('forgot-password', [authApiController::class, 'forgotPassword']);
 Route::post('verify-code', [authApiController::class, 'verifyCode']);
