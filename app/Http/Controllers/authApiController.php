@@ -254,7 +254,7 @@ class authApiController extends Controller
             // Attempt to login as HOD
             if ($token = auth('hod')->attempt($credentialsHod)) {
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 'Hod login successfully',
                     'user' => auth('hod')->user(),
                     'authorization' => [
                         'token' => $token,
@@ -266,7 +266,7 @@ class authApiController extends Controller
             // Attempt to login as Employee
             if ($token = auth('employee')->attempt($credentialsEmployee)) {
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 'Employee login successfully',
                     'user' => auth('employee')->user(),
                     'authorization' => [
                         'token' => $token,
@@ -356,17 +356,30 @@ class authApiController extends Controller
 
 
     public function logout()
-        {
-            try {
-                Auth::guard('api')->logout();
-                return response()->json(['message' => 'You have logged out successfully']);
-            } catch (Exception $e) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Logout failed: ' . $e->getMessage(),
-                ], 500);
+    {
+        try {
+            // Check if the current user is authenticated via the 'hod' guard
+            if (Auth::guard('hod')->check()) {
+                Auth::guard('hod')->logout();
+                return response()->json(['message' => 'HOD has logged out successfully']);
             }
+
+            // Check if the current user is authenticated via the 'employee' guard
+            if (Auth::guard('employee')->check()) {
+                Auth::guard('employee')->logout();
+                return response()->json(['message' => 'Employee has logged out successfully']);
+            }
+
+            // If no user is authenticated
+            return response()->json(['message' => 'No user is currently logged in'], 400);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Logout failed: ' . $e->getMessage(),
+            ], 500);
         }
+    }
+
     /**
      * @OA\Post(
      *      path="/api/hods/employee/create",
