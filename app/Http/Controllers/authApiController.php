@@ -46,7 +46,7 @@ class authApiController extends Controller
      * @OA\Post(
      *      path="/api/register",
      *      security={{"Bearer": {}}},
-     *      operationId="registerUser",
+     *      operationId="register hod",
      *      tags={"Authentication"},
      *      summary="Register a new user",
      *      description="Register a new user and return the inserted data",
@@ -61,7 +61,7 @@ class authApiController extends Controller
      *      ),
      *      @OA\Parameter(
      *          name="email",
-     *          description="User's email",
+     *          description="hod's email",
      *          required=true,
      *          in="query",
      *          @OA\Schema(
@@ -70,7 +70,7 @@ class authApiController extends Controller
      *      ),
      *      @OA\Parameter(
      *          name="contact_number",
-     *          description="User's contact number",
+     *          description="hod's contact number",
      *          required=true,
      *          in="query",
      *          @OA\Schema(
@@ -183,13 +183,13 @@ class authApiController extends Controller
      * @OA\Post(
      *      path="/api/login",
      *      security={{"Bearer": {}}},
-     *      operationId="loginUser",
+     *      operationId="login hod",
      *      tags={"Authentication"},
      *      summary="Login user",
      *      description="Authenticate a user and return a token",
      *      @OA\Parameter(
      *          name="email",
-     *          description="User's email",
+     *          description="hod's email",
      *          required=true,
      *          in="query",
      *          @OA\Schema(
@@ -199,7 +199,7 @@ class authApiController extends Controller
      *      ),
      *      @OA\Parameter(
      *          name="password",
-     *          description="User's password",
+     *          description="hod's password",
      *          required=true,
      *          in="query",
      *          @OA\Schema(
@@ -209,7 +209,7 @@ class authApiController extends Controller
      *      
      *      @OA\Response(
      *          response=200,
-     *          description="User successfully logged in",
+     *          description="hod successfully logged in",
      *          @OA\JsonContent(
      *              type="object",
      *              @OA\Property(property="status", type="string", example="success"),
@@ -279,6 +279,62 @@ class authApiController extends Controller
             return response()->json(['error' => 'Wrong credentials'], 401);
         }
     
+    /**
+     * @OA\Post(
+     *      path="/api/forgot-password",
+     *      security={{"Bearer": {}}},
+     *      operationId="forgot-password hod",
+     *      tags={"Authentication"},
+     *      summary="forgot-password user",
+     *      description="Authenticate a hod and return sent email",
+     *      @OA\Parameter(
+     *          name="email",
+     *          description="hod's email",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              format="email"
+     *          )
+     *      ),
+     *      
+     *      
+     *      @OA\Response(
+     *          response=200,
+     *          description="Hod successfully logged in",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="status", type="string", example="success"),
+     *              @OA\Property(property="user", type="object",
+     *                  
+     *               
+     *                  @OA\Property(property="email", type="string", example="kirabo@gmail.com"),
+     *                
+     *              ),
+     *              @OA\Property(property="authorization", type="object",
+     *                  @OA\Property(property="token", type="string", example="your-jwt-token"),
+     *                  @OA\Property(property="type", type="string", example="bearer")
+     *              )
+     *          )
+     *      ),
+     *       @OA\Response(
+     *          response=400,
+     *          description="Bad hod input"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource not found"
+     *      )
+     * )
+     */
 
     public function forgotPassword(Request $request)
     {
@@ -307,7 +363,64 @@ class authApiController extends Controller
 
         return response()->json(['message' => 'Verification code sent to your email'], 200);
     }
-
+    /**
+     * @OA\Post(
+     *      path="/api/verify-code",
+     *      security={{"Bearer": {}}},
+     *      operationId="verify-code Hod",
+     *      tags={"Authentication"},
+     *      summary="verify-code forget password for hod",
+     *      description="verify-code forget password for user and return the code is verfied",
+     *    
+     *      @OA\Parameter(
+     *          name="email",
+     *          description="hod's email",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="verification_code",
+     *          description="hod's verification_code",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *     
+     *      
+     *      @OA\Response(
+     *          response=200,
+     *          description="hod successfully registered",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="hod_name", type="string", example="kirabo phionah"),
+     *              @OA\Property(property="email", type="string", example="kirabo@gmail.com"),
+     *              @OA\Property(property="verification_code", type="string", example="643266"),
+     *              
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad hod input"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource not found"
+     *      )
+     * )
+     */
     public function verifyCode(Request $request)
     {
         // Validate email and code
@@ -327,14 +440,94 @@ class authApiController extends Controller
 
         return response()->json(['message' => 'Verification code verified successfully'], 200);
     }
-
+    /**
+     * @OA\Post(
+     *      path="/api/reset-password/{code}",
+     *      security={{"Bearer": {}}},
+     *      operationId="reset-password Hod",
+     *      tags={"Authentication"},
+     *      summary="reset-password for hod",
+     *      description="verify-code forget password for user and return the code is verfied",
+     *    
+     *      @OA\Parameter(
+     *          name="email",
+     *          description="hod's email",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="verification_code",
+     *          description="hod's verification_code",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="password",
+     *          description="hod's new password",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      * @OA\Parameter(
+        *     name="password_confirmation",
+        *     description="Confirmation of the new password",
+        *     required=true,
+        *     in="query",
+        *     @OA\Schema(
+    *         type="string"
+    *     )
+    * )
+     * ,
+     *     
+     *      
+     *      @OA\Response(
+     *          response=200,
+     *          description="hod successfully resetted password successfuly",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              
+     *              @OA\Property(property="email", type="string", example="kirabo@gmail.com"),
+     *              @OA\Property(property="verification_code", type="string", example="643266"),
+     *              @OA\Property(property="password", type="string", example="kirabo=123P"),
+     *              @OA\Property(property="password_confirmation", type="string", example="kirabo=123P"),
+     *              
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad hod input"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource not found"
+     *      )
+     * )
+     */
     public function resetPassword(Request $request)
     {
         // Validate input
         $request->validate([
             'email' => 'required|email',
             'verification_code' => 'required|string',
-            'password' => 'required|string|confirmed|min:6',
+            'password' => 'required|string|confirmed|min:8',
+           
+            'password_confirmation' => 'required|string|min:8', // Ensure this is validated
         ]);
 
         // Find HOD or employee by email
@@ -353,6 +546,43 @@ class authApiController extends Controller
 
         return response()->json(['message' => 'Password reset successfully'], 200);
     }
+
+    /**
+     * @OA\Post(
+     *      path="/api/logout",
+     *      security={{"Bearer": {}}},
+     *      operationId="logout",
+     *      tags={"Authentication"},
+     *      summary="Log out user",
+     *      description="Logs out the authenticated HOD or Employee.",
+     *    
+     *      @OA\Response(
+     *          response=200,
+     *          description="User logged out successfully",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="message", type="string", example="HOD has logged out successfully"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="No user is currently logged in",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="message", type="string", example="No user is currently logged in"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=500,
+     *          description="Logout failed",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="status", type="string", example="error"),
+     *              @OA\Property(property="message", type="string", example="Logout failed: Internal Server Error"),
+     *          )
+     *      )
+     * )
+     */
 
 
     public function logout()
@@ -591,7 +821,7 @@ class authApiController extends Controller
         return response()->json(['message' => 'Default password verified successfully'], 200);
     }
      
-        /**
+    /**
      * @OA\Post(
      *      path="/api/employee-reset-password/{default_password}",
      *      security={{"Bearer": {}}},

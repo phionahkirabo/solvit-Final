@@ -28,7 +28,7 @@
                 ],
                 "summary": "Register a new user",
                 "description": "Register a new user and return the inserted data",
-                "operationId": "registerUser",
+                "operationId": "register hod",
                 "parameters": [
                     {
                         "name": "hod_name",
@@ -42,7 +42,7 @@
                     {
                         "name": "email",
                         "in": "query",
-                        "description": "User's email",
+                        "description": "hod's email",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -51,7 +51,7 @@
                     {
                         "name": "contact_number",
                         "in": "query",
-                        "description": "User's contact number",
+                        "description": "hod's contact number",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -136,12 +136,12 @@
                 ],
                 "summary": "Login user",
                 "description": "Authenticate a user and return a token",
-                "operationId": "loginUser",
+                "operationId": "login hod",
                 "parameters": [
                     {
                         "name": "email",
                         "in": "query",
-                        "description": "User's email",
+                        "description": "hod's email",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -151,7 +151,7 @@
                     {
                         "name": "password",
                         "in": "query",
-                        "description": "User's password",
+                        "description": "hod's password",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -160,7 +160,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "User successfully logged in",
+                        "description": "hod successfully logged in",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -206,6 +206,322 @@
                     },
                     "403": {
                         "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/forgot-password": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "forgot-password user",
+                "description": "Authenticate a hod and return sent email",
+                "operationId": "forgot-password hod",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "hod's email",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "email"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Hod successfully logged in",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "kirabo@gmail.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "authorization": {
+                                            "properties": {
+                                                "token": {
+                                                    "type": "string",
+                                                    "example": "your-jwt-token"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "example": "bearer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad hod input"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/verify-code": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "verify-code forget password for hod",
+                "description": "verify-code forget password for user and return the code is verfied",
+                "operationId": "verify-code Hod",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "hod's email",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "verification_code",
+                        "in": "query",
+                        "description": "hod's verification_code",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "hod successfully registered",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "hod_name": {
+                                            "type": "string",
+                                            "example": "kirabo phionah"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "kirabo@gmail.com"
+                                        },
+                                        "verification_code": {
+                                            "type": "string",
+                                            "example": "643266"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad hod input"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/reset-password/{code}": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "reset-password for hod",
+                "description": "verify-code forget password for user and return the code is verfied",
+                "operationId": "reset-password Hod",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "hod's email",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "verification_code",
+                        "in": "query",
+                        "description": "hod's verification_code",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "hod's new password",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password_confirmation",
+                        "in": "query",
+                        "description": "Confirmation of the new password",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "hod successfully resetted password successfuly",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "email": {
+                                            "type": "string",
+                                            "example": "kirabo@gmail.com"
+                                        },
+                                        "verification_code": {
+                                            "type": "string",
+                                            "example": "643266"
+                                        },
+                                        "password": {
+                                            "type": "string",
+                                            "example": "kirabo=123P"
+                                        },
+                                        "password_confirmation": {
+                                            "type": "string",
+                                            "example": "kirabo=123P"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad hod input"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Log out user",
+                "description": "Logs out the authenticated HOD or Employee.",
+                "operationId": "logout",
+                "responses": {
+                    "200": {
+                        "description": "User logged out successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "HOD has logged out successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "No user is currently logged in",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No user is currently logged in"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Logout failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logout failed: Internal Server Error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
