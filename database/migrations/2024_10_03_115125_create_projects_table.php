@@ -19,9 +19,9 @@ return new class extends Migration
             $table->text('description')->nullable(); // Brief description
             $table->date('start_date'); // Project start date
             $table->date('end_date')->nullable(); // Project end or expected completion date
-            $table->enum('status', ['Active', 'Completed', 'On Hold', 'Cancelled', 'Pending'])->default('Pending'); // Project status
+            $table->enum('status', ['Active', 'Completed', 'On Hold', 'Cancelled', 'Pending'])->default('Pending'); // Enum for project status with default
             $table->unsignedBigInteger('hod_id'); // Foreign key to hods table
-            $table->string('project_category'); // Project category
+            $table->string('project_category')->nullable(); // Project category can be nullable if optional
             $table->timestamps(); // created_at and updated_at timestamps
 
             // Foreign key constraint
