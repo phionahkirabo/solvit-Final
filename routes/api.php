@@ -32,6 +32,11 @@ Route::prefix('employees')->middleware('employee')->group(function () {
     Route::get('/projects', [ProjectController::class, 'index']);          // List all projects (Employee)
     Route::get('/projects/{project_id}', [ProjectController::class, 'show']);  // Show a specific project (Employee)
     Route::put('/projects/{project_id}/status', [ProjectController::class, 'updateStatus']); // Employee updates project status
+     Route::get('/projects/{project_id}/comments', [ProjectCommentController::class, 'index']);  // List comments
+    Route::post('/projects/{project_id}/addComments', [ProjectCommentController::class, 'store']); // Add a comment
+    Route::get('/projects/{project_id}/comments/{comment_id}', [ProjectCommentController::class, 'show']);  // Show a comment
+    Route::put('/projects/{project_id}/comments/{comment_id}', [ProjectCommentController::class, 'update']); // Update a comment
+    Route::delete('/projects/{project_id}/comments/{comment_id}', [ProjectCommentController::class, 'destroy']); // Delete a comment
 
    
 });
