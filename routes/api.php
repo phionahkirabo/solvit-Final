@@ -18,12 +18,12 @@ Route::prefix('hods')->middleware('hod')->group(function () {
     // Add other HOD-specific routes on adding new projects
     Route::post('/employee/create', [authApiController::class, 'addEmployee'])->name('employee.verify.default.password');
 
-    // Add other HOD-specific routes on projects
+   
     Route::post('/projects', [ProjectController::class, 'store']);         // Create a new project (HOD only)
-    Route::put('/projects/{project_id}', [ProjectController::class, 'update']); // Update a project (HOD only)
-    Route::delete('/projects/{project_id}', [ProjectController::class, 'destroy']); // Delete a project (HOD only)
+    Route::post('/projectsUpdate/{project_id}', [ProjectController::class, 'update']); // Update a project (HOD only)
+    Route::delete('/projectsDelete/{project_id}', [ProjectController::class, 'destroy']); // Delete a project (HOD only)
 });
-
+ 
 // Employee-specific routes
 Route::prefix('employees')->middleware('employee')->group(function () {
     // employee resseting new password
