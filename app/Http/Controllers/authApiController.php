@@ -127,46 +127,28 @@ class authApiController extends Controller
      */
 
     public function register(Request $request)
-    {
-        // Validate the request data (Laravel will handle validation errors)
-        $validatedData = $request->validate([
-            'hod_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:hods',
-            'password' => 'required|string|min:6|confirmed',
-            'contact_number' => 'required|string|min:10',
+{
+    // Validate the request data (Laravel will handle validation errors)
+    $validatedData = $request->validate([
+        'hod_name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:hods',
+        'password' => 'required|string|min:8|confirmed',
+        'contact_number' => 'required|string|min:10',
+    ]);
+
+    try {
+        // Create a new user with the validated data
+        $user = Hod::create([
+            'hod_name' => $request->hod_name,
+            'email' => $request->email,
+            'contact_number' => $request->contact_number,
+            'password' => Hash::make($request->password),
         ]);
 
-        try {
-            // Create a new user with the validated data
-            $user = Hod::create([
-                'hod_name' => $request->hod_name,
-                'email' => $request->email,
-                'contact_number' => $request->contact_number,
-                'password' => Hash::make($request->password),
-            ]);
+        // Generate a JWT token for the authenticated user
+        $token = Auth::guard('api')->login($user);
 
-            // Generate a JWT token for the authenticated user
-            $token = Auth::guard('api')->login($user);
-
-            // Return a JSON response with success status and token
-            return response()->json([
-                'status' => 'success',
-                'message' => 'User created successfully',
-                'user' => $user,
-                'authorization' => [
-                    'token' => $token,
-                    'type' => 'bearer',
-                ]
-            ]);
-
-        } catch (QueryException $e) {
-            // Handle database query errors (e.g., unique constraint failure)
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Error creating user: ' . $e->getMessage(),
-            ], 500);
-        } catch (Exception $e) {
-            // Handle other general exceptions
+        // Return a JSON response with success status and token
         return response()->json([
             'status' => 'success',
             'message' => 'User created successfully',
@@ -175,10 +157,23 @@ class authApiController extends Controller
                 'token' => $token,
                 'type' => 'bearer',
             ]
-        ], 201); // Set the status code to 201
+        ], 201); // Set the status code to 201 (Created)
 
-        }
+    } catch (QueryException $e) {
+        // Handle database query errors (e.g., unique constraint failure)
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Error creating user: ' . $e->getMessage(),
+        ], 500);
+    } catch (Exception $e) {
+        // Handle other general exceptions
+        return response()->json([
+            'status' => 'error',
+            'message' => 'An error occurred: ' . $e->getMessage(),
+        ], 500); // Properly return the error message
     }
+}
+
     /**
      * @OA\Post(
      *      path="/api/login",
@@ -242,14 +237,15 @@ class authApiController extends Controller
             $validatedData = $request->validate([
                 'email' => 'string|email',
                 'password' => 'string|min:8',
-                'default_password' => 'string|min:8',
+                'new_password' => 'required|string|min:8|confirmed',
             ]);
 
             // HOD login credentials
-            $credentialsHod = $request->only('email', 'password');
+            $credentialsHod = $request->only('email','password');
 
             // Employee login credentials (uses default_password)
-            $credentialsEmployee = $request->only('email','default_password');
+            $credentialsEmployee = $request->only('email','new_password');
+
 
             // Attempt to login as HOD
             if ($token = auth('hod')->attempt($credentialsHod)) {
@@ -262,7 +258,7 @@ class authApiController extends Controller
                     ]
                 ]);
             }
-
+            return response()->json(['error' => 'HOD login failed'], 401);
             // Attempt to login as Employee
             if ($token = auth('employee')->attempt($credentialsEmployee)) {
                 return response()->json([
@@ -276,7 +272,7 @@ class authApiController extends Controller
             }
 
             // If both login attempts fail, return unauthorized
-            return response()->json(['error' => 'Wrong credentials'], 401);
+            return response()->json(['error' => 'Employee login failed'], 401);
         }
     
     /**
@@ -895,7 +891,7 @@ class authApiController extends Controller
         $request->validate([
             'email' => 'required|string|email', // Validate email format
             'default_password' => 'required|string', // Ensure default_password is provided
-            'new_password' => 'required|string|min:6', // Confirm new_password with new_password_confirmation
+            'new_password' => 'required|string|min:8|confirmed', // Confirm new_password with new_password_confirmation
         ]);
 
         // Retrieve the employee by their email
