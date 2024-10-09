@@ -6,6 +6,8 @@ use App\Models\Project;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Facades\DB;
+
 
 use Illuminate\Support\Facades\Log;
 
@@ -172,14 +174,30 @@ public function update(Request $request, $project_id)
 
         return response()->json($project, 200);
     }
-    public function countProjectsByStatus()
-{
-    // Count projects grouped by their status
-    $projectCounts = Project::select('status', DB::raw('count(*) as total'))
-        ->groupBy('status')
-        ->get();
+   
 
-    return response()->json($projectCounts); 
+public function countProjectsByStatus()
+{
+    // Define all possible statuses
+    $statuses = ['Active', 'Completed', 'On Hold', 'Cancelled', 'Pending'];
+
+    // Get the count of projects grouped by their status
+    $projectCounts = DB::table('projects')
+        ->select('status', DB::raw('count(*) as count'))
+        ->groupBy('status')
+        ->get()
+        ->keyBy('status'); // Key the results by status for easy lookup
+
+    // Prepare the final result with all statuses
+    $result = [];
+    foreach ($statuses as $status) {
+        $result[$status] = [
+            'count' => $projectCounts->get($status)->count ?? 0 // Default to 0 if no projects
+        ];
+    }
+
+    return response()->json($result, 200);
 }
+
 
 }
