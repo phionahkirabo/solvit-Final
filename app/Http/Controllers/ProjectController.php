@@ -161,7 +161,11 @@ public function update(Request $request, $project_id)
 
         $request->validate([
             'status' => 'required|string|in:Active,Completed,On Hold,Cancelled,Pending',
-        ]);
+        ],[
+        'status.required' => 'The project status is required.',
+        'status.string' => 'The project status must be a string.',
+        'status.in' => 'The status must be one of the following: Active, Completed, On Hold, Cancelled, Pending.',
+    ]);
 
         $project->status = $request->status;
         $project->save();
