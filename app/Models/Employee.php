@@ -54,6 +54,11 @@ return [];
   public function hod()
     {
         return $this->belongsTo(Hod::class, 'hod_fk_id');
-    }
+  }
+  public function tasks()
+  {
+      return $this->hasMany(Task::class, 'employee_id');
+  }
+
 
 }
