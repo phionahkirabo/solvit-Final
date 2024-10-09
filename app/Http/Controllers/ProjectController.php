@@ -172,4 +172,14 @@ public function update(Request $request, $project_id)
 
         return response()->json($project, 200);
     }
+    public function countProjectsByStatus()
+{
+    // Count projects grouped by their status
+    $projectCounts = Project::select('status', DB::raw('count(*) as total'))
+        ->groupBy('status')
+        ->get();
+
+    return response()->json($projectCounts); 
+}
+
 }

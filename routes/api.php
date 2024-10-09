@@ -40,6 +40,9 @@ Route::prefix('employees')->middleware('employee')->group(function () {
 
    
 });
+   //count on status of all project by each project
+Route::get('/employees/projects/status/count', [ProjectController::class, 'countProjectsByStatus']);
+
 //  Route::post('/employeelogin', [authApiController::class, 'employeeLogin']);
  Route::post('/employees-verify-default-password', [authApiController::class, 'verifyDefaultPassword']);
  Route::get('/allhods', [authApiController::class, 'allhods']);
