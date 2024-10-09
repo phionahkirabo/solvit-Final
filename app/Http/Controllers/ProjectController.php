@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class ProjectController extends Controller
 {
+
     // List all projects (Employee)
     public function index()
     {
@@ -28,42 +29,67 @@ class ProjectController extends Controller
 
     // Create a new project (HOD only)
   
+public function store(Request $request)
+{
+    // Validate the request
+    $validator = Validator::make($request->all(), [
+        'project_name' => 'required|string|max:255',  
+        'description' => 'required|string',
+        'start_date' => 'required|date_format:d/m/Y',  // Validate date with d/m/Y format
+        'end_date' => 'required|date_format:d/m/Y|after_or_equal:start_date',  // Ensure end_date is not before start_date
+        'project_category' => 'required|string|max:255',
+        'status' => 'required|string|in:Active,Completed,On Hold,Cancelled,Pending',
+        'hod_id' => 'required|exists:hods,id',
+    ], [
+        // Custom error messages
+        'project_name.required' => 'The project name is required.',
+        'description.required' => 'The project description is required.',
+        'start_date.required' => 'The start date is required.',
+        'start_date.date_format' => 'The start date must be in the format dd/mm/yyyy.',
+        'end_date.required' => 'The end date is required.',
+        'end_date.date_format' => 'The end date must be in the format dd/mm/yyyy.',
+        'end_date.after_or_equal' => 'The end date must be a date after or equal to the start date.',
+        'project_category.required' => 'The project category is required.',
+        'status.required' => 'The project status is required.',
+        'status.in' => 'The status must be one of the following: Active, Completed, On Hold, Cancelled, Pending.',
+        'hod_id.required' => 'The HOD ID is required.',
+        'hod_id.exists' => 'The selected HOD does not exist.',
+    ]);
 
-    public function store(Request $request)
-     {
-   
-        $request->validate([
-            'project_name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'start_date' => 'required|date_format:d/m/Y',  // Expecting date in d/m/Y format
-            'end_date' => 'nullable|date_format:d/m/Y',
-            'project_category' => 'nullable|string|max:255',
-            'status' => 'nullable|string|in:Active,Completed,On Hold,Cancelled,Pending',
-            'hod_id' => 'required|exists:hods,id',
-        ]);
+    // Check if validation fails
+    if ($validator->fails()) {
+        return response()->json([
+            'message' => 'Validation error',
+            'errors' => $validator->errors()
+        ], 422); // Unprocessable Entity
+    }
 
-        // Convert the dates to Y-m-d format for MySQL
+    // Convert the dates to Y-m-d format for MySQL
+    try {
         $start_date = Carbon::createFromFormat('d/m/Y', $request->start_date)->format('Y-m-d');
-        $end_date = $request->end_date ? Carbon::createFromFormat('d/m/Y', $request->end_date)->format('Y-m-d') : null;
+        $end_date = Carbon::createFromFormat('d/m/Y', $request->end_date)->format('Y-m-d');
+    } catch (\Exception $e) {
+        // Log the error and return a proper response
+        \Log::error('Date parsing error: ' . $e->getMessage());
+        return response()->json(['error' => 'Invalid date format.'], 400);
+    }
 
-        // Create the project with the formatted dates
-        $project = Project::create([
-            'project_name' => $request->project_name,
-            'description' => $request->description,
-            'start_date' => $start_date,
-            'end_date' => $end_date,
-            'project_category' => $request->project_category,
-            'status' => $request->status,
-            'hod_id' => $request->hod_id,
-        ]);
+    // Create the project with the formatted dates
+    $project = Project::create([
+        'project_name' => $request->project_name,
+        'description' => $request->description,
+        'start_date' => $start_date,
+        'end_date' => $end_date,
+        'project_category' => $request->project_category,
+        'status' => $request->status,
+        'hod_id' => $request->hod_id,
+    ]);
 
-        return response()->json($project, 201);
-     }
-
+    return response()->json($project, 201);
+}
 
     // Update a project (HOD only)
   
-    
 public function update(Request $request, $project_id)
 {
  $validator = Validator::make($request->all(), [

@@ -16,9 +16,9 @@ class Project extends Model
         'description',
         'start_date',
         'end_date',
-        'status',
-        'hod_id',
         'project_category',
+        'status',
+        'hod_id'
     ];
 
     public function hod()
