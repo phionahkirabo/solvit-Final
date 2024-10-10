@@ -19,7 +19,7 @@ class TaskController extends Controller
             'due_date' => 'required|date|after_or_equal:start_date',
             'status' => 'required|in:Pending,In Progress,Completed',
             'project_id' => 'required|exists:projects,project_id',
-            'employee_id' => 'required|exists:employees,employee_id',
+            'employee_id' => 'required|exists:employees,id',
         ]);
 
         $task = Task::create([
