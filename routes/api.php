@@ -4,6 +4,7 @@ use App\Http\Controllers\authApiController;
 use App\Http\Controllers\codecheckcontroller;
 use App\Http\Controllers\ProjectCommentController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
 
 use App\Http\Controllers\reset_password\forgetpasswordcontroller;
 use App\Http\Controllers\reset_password\resetcontroller;
@@ -22,6 +23,12 @@ Route::prefix('hods')->middleware('hod')->group(function () {
     Route::post('/projects', [ProjectController::class, 'store']);         // Create a new project (HOD only)
     Route::post('/projectsUpdate/{project_id}', [ProjectController::class, 'update']); // Update a project (HOD only)
     Route::delete('/projectsDelete/{project_id}', [ProjectController::class, 'destroy']); // Delete a project (HOD only)
+    // route about tasks 
+    Route::post('/tasks', [TaskController::class, 'store']); // Create task
+    Route::get('/tasks', [TaskController::class, 'index']); // List all tasks
+    Route::get('/tasks/{task_id}', [TaskController::class, 'show']); // Show a task
+    Route::put('/tasks/{task_id}', [TaskController::class, 'update']); // Update a task
+    Route::delete('/tasks/{task_id}', [TaskController::class, 'destroy']);
 });
  
 // Employee-specific routes
