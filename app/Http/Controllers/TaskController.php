@@ -31,7 +31,7 @@ class TaskController extends Controller
             'project_id' => $request->project_id,
             'employee_id' => $request->employee_id,
         ]);
-
+       
         return response()->json($task, 201);
     }
 
@@ -48,13 +48,13 @@ class TaskController extends Controller
         $task = Task::findOrFail($task_id);
 
         $request->validate([
-            'task_name' => 'required|string|max:255',
+            'task_name' => 'required|string|max:255', 
             'description' => 'required|string',
             'start_date' => 'required|date',
             'due_date' => 'required|date|after_or_equal:start_date',
             'status' => 'required|in:Pending,In Progress,Completed',
             'project_id' => 'required|exists:projects,project_id',
-            'employee_id' => 'required|exists:employees,employee_id',
+            'employee_id' => 'required|exists:employees,id',
         ]);
 
         $task->update([

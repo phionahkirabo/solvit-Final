@@ -30,7 +30,114 @@ class ProjectController extends Controller
     }
 
     // Create a new project (HOD only)
-  
+ /**
+     * @OA\Post(
+     *      path="/api/hods/projects",
+     *      security={{"Bearer": {}}},
+     *      operationId="add project",
+     *      tags={"add project underHods middleware"},
+     *      summary="adding new project in the system",
+     *      description="authanticate hod will add new project to the system ",
+     *    
+     *      @OA\Parameter(
+     *          name="project_name",
+     *          description="project name",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="description",
+     *          description="description",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *     
+     *     @OA\Parameter(
+     *          name="start_date",
+     *          description="start date",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *     @OA\Parameter(
+     *          name="end_date",
+     *          description="end_date",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *     @OA\Parameter(
+     *          name="project_category",
+     *          description="project category by the number P1,P2,P3",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     * @OA\Parameter(
+     *          name="status",
+     *          description="to see if the project it is Pending,On hold,Active,Cancelled,Completed",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     * @OA\Parameter(
+     *          name="hod_id",
+     *          description="Authanticated hod",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      
+     *      @OA\Response(
+     *          response=200,
+     *          description="hod successfully registered",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="project_name", type="string", example="emplyee's project management"),
+     *              @OA\Property(property="description", type="string", example="this project it is about to fix  project managment time"),
+     *              @OA\Property(property="start_date", type="string", example="2024/10/19"),
+     *              @OA\Property(property="end_date", type="string", example="2024/10/29"),
+     *              @OA\Property(property="project_category", type="string", example="like P1,p2,p3"),
+     *              @OA\Property(property="status", type="string", example="Pending,On hold,Active,Cancelled,Completed"),
+     *              @OA\Property(property="hod_id", type="string", example="1/2 or any other hod id"),
+     *              
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad hod input"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource not found"
+     *      )
+     * )
+     */
+
 public function store(Request $request)
 {
     // Validate the request
@@ -91,7 +198,123 @@ public function store(Request $request)
 }
 
     // Update a project (HOD only)
-  
+    
+ /**
+     * @OA\Post(
+     *      path="/api/hods/projectsUpdate/{project_id}",
+     *      security={{"Bearer": {}}},
+     *      operationId="Update project",
+     *      tags={"Update project under Hods middleware"},
+     *      summary="Update new project in the system",
+     *      description="authanticate hod will add new project to the system ",
+     *      @OA\Parameter(
+     *          name="project_id",
+     *          description="project id to be updated",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="project_name",
+     *          description="project name",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="description",
+     *          description="description",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *     
+     *     @OA\Parameter(
+     *          name="start_date",
+     *          description="start date",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *     @OA\Parameter(
+     *          name="end_date",
+     *          description="end_date",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *     @OA\Parameter(
+     *          name="project_category",
+     *          description="project category by the number P1,P2,P3",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     * @OA\Parameter(
+     *          name="status",
+     *          description="to see if the project it is Pending,On hold,Active,Cancelled,Completed",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     * @OA\Parameter(
+     *          name="hod_id",
+     *          description="Authanticated hod",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      
+     *      @OA\Response(
+     *          response=200,
+     *          description="hod successfully registered",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="id", type="integer", example="emplyee's project management"),
+     *              @OA\Property(property="project_name", type="string", example="emplyee's project management"),
+     *              @OA\Property(property="description", type="string", example="this project it is about to fix  project managment time"),
+     *              @OA\Property(property="start_date", type="string", example="2024/10/19"),
+     *              @OA\Property(property="end_date", type="string", example="2024/10/29"),
+     *              @OA\Property(property="project_category", type="string", example="like P1,p2,p3"),
+     *              @OA\Property(property="status", type="string", example="Pending,On hold,Active,Cancelled,Completed"),
+     *              @OA\Property(property="hod_id", type="integer", example="1/2 or any other hod id"),
+     *              
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad hod input"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource not found"
+     *      )
+     * )
+     */
 public function update(Request $request, $project_id)
 {
  $validator = Validator::make($request->all(), [

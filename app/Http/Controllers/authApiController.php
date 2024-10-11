@@ -184,7 +184,7 @@ class authApiController extends Controller
      *      description="Authenticate a user and return a token",
      *      @OA\Parameter(
      *          name="email",
-     *          description="hod's email",
+     *          description="hod's email/employee's email",
      *          required=true,
      *          in="query",
      *          @OA\Schema(
@@ -194,7 +194,7 @@ class authApiController extends Controller
      *      ),
      *      @OA\Parameter(
      *          name="password",
-     *          description="hod's password",
+     *          description="hod's password/employee's password",
      *          required=true,
      *          in="query",
      *          @OA\Schema(

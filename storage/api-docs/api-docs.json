@@ -5,6 +5,287 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/hods/projects": {
+            "post": {
+                "tags": [
+                    "add project underHods middleware"
+                ],
+                "summary": "adding new project in the system",
+                "description": "authanticate hod will add new project to the system ",
+                "operationId": "add project",
+                "parameters": [
+                    {
+                        "name": "project_name",
+                        "in": "query",
+                        "description": "project name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "description",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "start_date",
+                        "in": "query",
+                        "description": "start date",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "end_date",
+                        "in": "query",
+                        "description": "end_date",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "project_category",
+                        "in": "query",
+                        "description": "project category by the number P1,P2,P3",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "to see if the project it is Pending,On hold,Active,Cancelled,Completed",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "hod_id",
+                        "in": "query",
+                        "description": "Authanticated hod",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "hod successfully registered",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "project_name": {
+                                            "type": "string",
+                                            "example": "emplyee's project management"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "this project it is about to fix  project managment time"
+                                        },
+                                        "start_date": {
+                                            "type": "string",
+                                            "example": "2024/10/19"
+                                        },
+                                        "end_date": {
+                                            "type": "string",
+                                            "example": "2024/10/29"
+                                        },
+                                        "project_category": {
+                                            "type": "string",
+                                            "example": "like P1,p2,p3"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Pending,On hold,Active,Cancelled,Completed"
+                                        },
+                                        "hod_id": {
+                                            "type": "string",
+                                            "example": "1/2 or any other hod id"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad hod input"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/hods/projectsUpdate/{project_id}": {
+            "post": {
+                "tags": [
+                    "Update project under Hods middleware"
+                ],
+                "summary": "Update new project in the system",
+                "description": "authanticate hod will add new project to the system ",
+                "operationId": "Update project",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "project id to be updated",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "project_name",
+                        "in": "query",
+                        "description": "project name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "description",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "start_date",
+                        "in": "query",
+                        "description": "start date",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "end_date",
+                        "in": "query",
+                        "description": "end_date",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "project_category",
+                        "in": "query",
+                        "description": "project category by the number P1,P2,P3",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "to see if the project it is Pending,On hold,Active,Cancelled,Completed",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "hod_id",
+                        "in": "query",
+                        "description": "Authanticated hod",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "hod successfully registered",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "emplyee's project management"
+                                        },
+                                        "project_name": {
+                                            "type": "string",
+                                            "example": "emplyee's project management"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "this project it is about to fix  project managment time"
+                                        },
+                                        "start_date": {
+                                            "type": "string",
+                                            "example": "2024/10/19"
+                                        },
+                                        "end_date": {
+                                            "type": "string",
+                                            "example": "2024/10/29"
+                                        },
+                                        "project_category": {
+                                            "type": "string",
+                                            "example": "like P1,p2,p3"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Pending,On hold,Active,Cancelled,Completed"
+                                        },
+                                        "hod_id": {
+                                            "type": "integer",
+                                            "example": "1/2 or any other hod id"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad hod input"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/allhods": {
             "get": {
                 "summary": "fetch all hods",
@@ -141,7 +422,7 @@
                     {
                         "name": "email",
                         "in": "query",
-                        "description": "hod's email",
+                        "description": "hod's email/employee's email",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -151,7 +432,7 @@
                     {
                         "name": "password",
                         "in": "query",
-                        "description": "hod's password",
+                        "description": "hod's password/employee's password",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -761,7 +1042,7 @@
                         }
                     },
                     {
-                        "name": "new_password",
+                        "name": "password",
                         "in": "query",
                         "description": "The new password the employee wants to set",
                         "required": true,
@@ -786,7 +1067,7 @@
                                             "type": "string",
                                             "example": "235jjlkh="
                                         },
-                                        "new_password": {
+                                        "password": {
                                             "type": "string",
                                             "example": "235jjlkh=1"
                                         }
@@ -818,6 +1099,14 @@
         }
     },
     "tags": [
+        {
+            "name": "add project underHods middleware",
+            "description": "add project underHods middleware"
+        },
+        {
+            "name": "Update project under Hods middleware",
+            "description": "Update project under Hods middleware"
+        },
         {
             "name": "Authentication",
             "description": "Authentication"
