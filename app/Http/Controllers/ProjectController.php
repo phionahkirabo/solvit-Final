@@ -369,6 +369,42 @@ public function update(Request $request, $project_id)
 
     return response()->json(['message' => 'Project updated successfully', 'project' => $updateData], 200);
 }
+ /**
+     * @OA\Delete(
+     *      path="/api/hods/projectsDelete/{project_id}",
+     *      security={{"Bearer": {}}},
+     *      operationId="delete project",
+     *      tags={"delete project under Hods middleware"},
+     *      summary="delete new project in the system",
+     *      description="authanticate hod will delete new project to the system ",
+     *      @OA\Parameter(
+     *          name="project_id",
+     *          description="project id to be delete",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *     
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad hod input"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource not found"
+     *      )
+     * )
+     */
 #     
     // Delete a project (HOD only)
     public function destroy($project_id)

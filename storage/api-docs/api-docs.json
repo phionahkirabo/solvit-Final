@@ -286,6 +286,46 @@
                 ]
             }
         },
+        "/api/hods/projectsDelete/{project_id}": {
+            "delete": {
+                "tags": [
+                    "delete project under Hods middleware"
+                ],
+                "summary": "delete new project in the system",
+                "description": "authanticate hod will delete new project to the system ",
+                "operationId": "delete project",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "project id to be delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Bad hod input"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/allhods": {
             "get": {
                 "summary": "fetch all hods",
@@ -1106,6 +1146,10 @@
         {
             "name": "Update project under Hods middleware",
             "description": "Update project under Hods middleware"
+        },
+        {
+            "name": "delete project under Hods middleware",
+            "description": "delete project under Hods middleware"
         },
         {
             "name": "Authentication",
