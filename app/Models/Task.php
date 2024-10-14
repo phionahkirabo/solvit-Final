@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,13 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     use HasFactory;
-     protected $fillable = [
-        'task_name',      // Task name
-        'description',    // Task description
-        'start_date',     // Start date
-        'due_date',       // Due date
-        'status',         // Task status
-        'project_id',     // Foreign key referencing projects table
-        'employee_id'     // Foreign key referencing employees table
+
+    // Define the primary key as 'task_id'
+    protected $primaryKey = 'task_id';
+
+    // If your primary key is auto-incrementing
+    public $incrementing = true;
+
+    // Specify the data type for your primary key (integer)
+    protected $keyType = 'int';
+
+    // Define the fillable fields
+    protected $fillable = [
+        'task_name',
+        'description',
+        'start_date',
+        'due_date',
+        'status',
+        'project_id',
+        'employee_id',
     ];
 }
+

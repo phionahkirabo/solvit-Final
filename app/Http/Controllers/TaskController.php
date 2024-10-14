@@ -9,7 +9,114 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    // Create a new task
+    // Create a new task// Create a new task (Employee only)
+/**
+ * @OA\Post(
+ *      path="/api/hods/tasks",
+ *      security={{"Bearer": {}}},
+ *      operationId="addTask",
+ *      tags={"add task under hods middleware"},
+ *      summary="adding new task in the system",
+ *      description="Authenticated employee will add a new task to the system",
+ *      
+ *      @OA\Parameter(
+ *          name="task_name",
+ *          description="Name of the task",
+ *          required=true,
+ *          in="query",
+ *          @OA\Schema(
+ *              type="string"
+ *          )
+ *      ),
+ *      @OA\Parameter(
+ *          name="description",
+ *          description="Task description",
+ *          required=true,
+ *          in="query",
+ *          @OA\Schema(
+ *              type="string"
+ *          )
+ *      ),
+ *      @OA\Parameter(
+ *          name="start_date",
+ *          description="Task start date",
+ *          required=true,
+ *          in="query",
+ *          @OA\Schema(
+ *              type="string",
+ *              format="date"
+ *          )
+ *      ),
+ *      @OA\Parameter(
+ *          name="due_date",
+ *          description="Task due date",
+ *          required=true,
+ *          in="query",
+ *          @OA\Schema(
+ *              type="string",
+ *              format="date"
+ *          )
+ *      ),
+ *      @OA\Parameter(
+ *          name="status",
+ *          description="Task status (Pending, In Progress, Completed)",
+ *          required=true,
+ *          in="query",
+ *          @OA\Schema(
+ *              type="string"
+ *          )
+ *      ),
+ *      @OA\Parameter(
+ *          name="project_id",
+ *          description="ID of the associated project",
+ *          required=true,
+ *          in="query",
+ *          @OA\Schema(
+ *              type="integer"
+ *          )
+ *      ),
+ *      @OA\Parameter(
+ *          name="employee_id",
+ *          description="ID of the authenticated employee",
+ *          required=true,
+ *          in="query",
+ *          @OA\Schema(
+ *              type="integer"
+ *          )
+ *      ),
+ *      
+ *      @OA\Response(
+ *          response=201,
+ *          description="Task successfully created",
+ *          @OA\JsonContent(
+ *              type="object",
+ *              @OA\Property(property="task_name", type="string", example="Task 1"),
+ *              @OA\Property(property="description", type="string", example="Description of Task 1"),
+ *              @OA\Property(property="start_date", type="string", format="date", example="2024-10-14"),
+ *              @OA\Property(property="due_date", type="string", format="date", example="2024-10-20"),
+ *              @OA\Property(property="status", type="string", example="Pending"),
+ *              @OA\Property(property="project_id", type="integer", example=1),
+ *              @OA\Property(property="employee_id", type="integer", example=2),
+ *              @OA\Property(property="created_at", type="string", format="date-time", example="2024-10-14T12:34:56Z"),
+ *              @OA\Property(property="updated_at", type="string", format="date-time", example="2024-10-14T12:34:56Z")
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response=400,
+ *          description="Bad input"
+ *      ),
+ *      @OA\Response(
+ *          response=401,
+ *          description="Unauthenticated"
+ *      ),
+ *      @OA\Response(
+ *          response=403,
+ *          description="Forbidden"
+ *      )
+ * )
+ */
+
+
     public function store(Request $request)
     {
         $request->validate([
@@ -41,34 +148,157 @@ class TaskController extends Controller
         $task = Task::with(['project', 'employee'])->findOrFail($task_id);
         return response()->json($task, 200);
     }
+// Update an existing task (Employee only)
+/**
+ * @OA\Put(
+ *      path="/api/hods/tasks/{task_id}",
+ *      security={{"Bearer": {}}},
+ *      operationId="updateTask",
+ *      tags={"update task under Employee middleware"},
+ *      summary="Update an existing task in the system",
+ *      description="Authenticated employee will update an existing task in the system",
+ *      
+ *      @OA\Parameter(
+ *          name="task_id",
+ *          description="ID of the task to update",
+ *          required=true,
+ *          in="path",
+ *          @OA\Schema(
+ *              type="integer"
+ *          )
+ *      ),
+ *      @OA\Parameter(
+ *          name="task_name",
+ *          description="Name of the task",
+ *          required=true,
+ *          in="query",
+ *          @OA\Schema(
+ *              type="string"
+ *          )
+ *      ),
+ *      @OA\Parameter(
+ *          name="description",
+ *          description="Task description",
+ *          required=true,
+ *          in="query",
+ *          @OA\Schema(
+ *              type="string"
+ *          )
+ *      ),
+ *      @OA\Parameter(
+ *          name="start_date",
+ *          description="Task start date",
+ *          required=true,
+ *          in="query",
+ *          @OA\Schema(
+ *              type="string",
+ *              format="date"
+ *          )
+ *      ),
+ *      @OA\Parameter(
+ *          name="due_date",
+ *          description="Task due date",
+ *          required=true,
+ *          in="query",
+ *          @OA\Schema(
+ *              type="string",
+ *              format="date"
+ *          )
+ *      ),
+ *      @OA\Parameter(
+ *          name="status",
+ *          description="Task status (Pending, In Progress, Completed)",
+ *          required=true,
+ *          in="query",
+ *          @OA\Schema(
+ *              type="string"
+ *          )
+ *      ),
+ *      @OA\Parameter(
+ *          name="project_id",
+ *          description="ID of the associated project",
+ *          required=true,
+ *          in="query",
+ *          @OA\Schema(
+ *              type="integer"
+ *          )
+ *      ),
+ *      @OA\Parameter(
+ *          name="employee_id",
+ *          description="ID of the authenticated employee",
+ *          required=true,
+ *          in="query",
+ *          @OA\Schema(
+ *              type="integer"
+ *          )
+ *      ),
+ *      
+ *      @OA\Response(
+ *          response=200,
+ *          description="Task successfully updated",
+ *          @OA\JsonContent(
+ *              type="object",
+ *              @OA\Property(property="task_name", type="string", example="Updated Task"),
+ *              @OA\Property(property="description", type="string", example="Updated description of the task"),
+ *              @OA\Property(property="start_date", type="string", format="date", example="2024-10-14"),
+ *              @OA\Property(property="due_date", type="string", format="date", example="2024-10-20"),
+ *              @OA\Property(property="status", type="string", example="In Progress"),
+ *              @OA\Property(property="project_id", type="integer", example=1),
+ *              @OA\Property(property="employee_id", type="integer", example=2),
+ *              @OA\Property(property="updated_at", type="string", format="date-time", example="2024-10-14T12:34:56Z")
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response=400,
+ *          description="Bad input"
+ *      ),
+ *      @OA\Response(
+ *          response=401,
+ *          description="Unauthenticated"
+ *      ),
+ *      @OA\Response(
+ *          response=403,
+ *          description="Forbidden"
+ *      ),
+ *      @OA\Response(
+ *          response=404,
+ *          description="Task not found"
+ *      )
+ * )
+ */
 
     // Update a task
     public function update(Request $request, $task_id)
-    {
-        $task = Task::findOrFail($task_id);
+{
+    // Find the task by 'task_id'
+    $task = Task::findOrFail($task_id);
 
-        $request->validate([
-            'task_name' => 'required|string|max:255', 
-            'description' => 'required|string',
-            'start_date' => 'required|date',
-            'due_date' => 'required|date|after_or_equal:start_date',
-            'status' => 'required|in:Pending,In Progress,Completed',
-            'project_id' => 'required|exists:projects,project_id',
-            'employee_id' => 'required|exists:employees,id',
-        ]);
+    // Validate the request input
+    $request->validate([
+        'task_name' => 'required|string|max:255', 
+        'description' => 'required|string',
+        'start_date' => 'required|date',
+        'due_date' => 'required|date|after_or_equal:start_date',
+        'status' => 'required|in:Pending,In Progress,Completed',
+        'project_id' => 'required|exists:projects,project_id',
+        'employee_id' => 'required|exists:employees,id',
+    ]);
 
-        $task->update([
-            'task_name' => $request->task_name,
-            'description' => $request->description,
-            'start_date' => $request->start_date,
-            'due_date' => $request->due_date,
-            'status' => $request->status,
-            'project_id' => $request->project_id,
-            'employee_id' => $request->employee_id,
-        ]);
+    // Update the task with the validated data
+    $task->update([
+        'task_name' => $request->task_name,
+        'description' => $request->description,
+        'start_date' => $request->start_date,
+        'due_date' => $request->due_date,
+        'status' => $request->status,
+        'project_id' => $request->project_id,
+        'employee_id' => $request->employee_id,
+    ]);
 
-        return response()->json($task, 200);
-    }
+    // Return the updated task in the response
+    return response()->json($task, 200);
+}
+
 
     // Delete a task
     public function destroy($task_id)
