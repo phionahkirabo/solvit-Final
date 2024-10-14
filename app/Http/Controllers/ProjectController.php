@@ -415,25 +415,117 @@ public function update(Request $request, $project_id)
         return response()->json(null, 204);
     }
 
-    // Employee updates project status (Employee only)
-    public function updateStatus(Request $request, $project_id)
+ // Update project status (Employee only)
+/**                                                                                                                                                                                                                                                                                                                                                                                                          
+ * @OA\Put(
+ *      path="/api/employees/projects/{project_id}/status",
+ *      security={{"Bearer": {}}},
+ *      operationId="updateProjectStatus",
+ *      tags={"update project status under Employee middleware"},
+ *      summary="Update the status of a project",
+ *      description="Employee can update the status of the project (Pending, On Hold, Active, Cancelled, Completed)",
+ *      
+ *      @OA\Parameter(
+ *          name="project_id",
+ *          description="ID of the project to update",
+ *          required=true,
+ *          in="path",
+ *          @OA\Schema(
+ *              type="integer"
+ *          )
+ *      ),
+ *      @OA\Parameter(
+ *          name="status",
+ *          description="New status for the project",
+ *          required=true,
+ *          in="query",
+ *          @OA\Schema(
+ *              type="string",
+ *              enum={"Active", "Completed", "On Hold", "Cancelled", "Pending"}
+ *          )
+ *      ),
+ *      
+ *      @OA\Response(
+ *          response=200,
+ *          description="Project status updated successfully",
+ *          @OA\JsonContent(
+ *              type="object",
+ *              @OA\Property(property="project_id", type="integer", example=1),
+ *              @OA\Property(property="status", type="string", example="Active")
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response=400,
+ *          description="Bad input"
+ *      ),
+ *      @OA\Response(
+ *          response=401,
+ *          description="Unauthenticated"
+ *      ),
+ *      @OA\Response(
+ *          response=403,
+ *          description="Forbidden"
+ *      ),
+ *      @OA\Response(
+ *          response=404,
+ *          description="Project not found"
+ *      )
+ * )
+ */
+
+public function updateStatus(Request $request, $project_id)
     {
+        // Find the project by its ID
         $project = Project::findOrFail($project_id);
 
+        // Validate the incoming request
         $request->validate([
             'status' => 'required|string|in:Active,Completed,On Hold,Cancelled,Pending',
         ],[
-        'status.required' => 'The project status is required.',
-        'status.string' => 'The project status must be a string.',
-        'status.in' => 'The status must be one of the following: Active, Completed, On Hold, Cancelled, Pending.',
-    ]);
+            'status.required' => 'The project status is required.',
+            'status.string' => 'The project status must be a string.',
+            'status.in' => 'The status must be one of the following: Active, Completed, On Hold, Cancelled, Pending.',
+        ]);
 
+        // Update the project status
         $project->status = $request->status;
         $project->save();
 
+        // Return the updated project details in the response
         return response()->json($project, 200);
     }
-   
+// Count projects by status (Employee only)
+/**
+ * @OA\Get(
+ *      path="/api/employees/projects/status/count",
+ *      security={{"Bearer": {}}},
+ *      operationId="countProjectsByStatus",
+ *      tags={"Count projects by status under Employee middleware"},
+ *      summary="Get the count of projects by their status",
+ *      description="Employee can retrieve the count of projects for each status (Active, Completed, On Hold, Cancelled, Pending).",
+ *      
+ *      @OA\Response(
+ *          response=200,
+ *          description="Successfully retrieved the project counts",
+ *          @OA\JsonContent(
+ *              type="object",
+ *              @OA\Property(property="Active", type="object", @OA\Property(property="count", type="integer", example=5)),
+ *              @OA\Property(property="Completed", type="object", @OA\Property(property="count", type="integer", example=3)),
+ *              @OA\Property(property="On Hold", type="object", @OA\Property(property="count", type="integer", example=2)),
+ *              @OA\Property(property="Cancelled", type="object", @OA\Property(property="count", type="integer", example=1)),
+ *              @OA\Property(property="Pending", type="object", @OA\Property(property="count", type="integer", example=4))
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response=401,
+ *          description="Unauthenticated"
+ *      ),
+ *      @OA\Response(
+ *          response=403,
+ *          description="Forbidden"
+ *      )
+ * )
+ */
 
 public function countProjectsByStatus()
 {
