@@ -5,7 +5,13 @@ use App\Models\Task;
 use App\Models\Employee;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+
 
 class TaskController extends Controller
 {
@@ -270,22 +276,44 @@ class TaskController extends Controller
     // Update a task
     public function update(Request $request, $task_id)
 {
-    // Find the task by 'task_id'
-    $task = Task::findOrFail($task_id);
-
     // Validate the request input
-    $request->validate([
+    $validator = Validator::make($request->all(), [
         'task_name' => 'required|string|max:255', 
         'description' => 'required|string',
         'start_date' => 'required|date',
-        'due_date' => 'required|date|after_or_equal:start_date',
+        'due_date' => 'required|date|after_or_equal:start_date',  // Ensuring due_date is not before start_date
         'status' => 'required|in:Pending,In Progress,Completed',
         'project_id' => 'required|exists:projects,project_id',
         'employee_id' => 'required|exists:employees,id',
+    ], [
+        // Custom error messages
+        'task_name.required' => 'The task name is required.',
+        'description.required' => 'The task description is required.',
+        'start_date.required' => 'The start date is required.',
+        'due_date.required' => 'The due date is required.',
+        'due_date.after_or_equal' => 'The due date must be a date after or equal to the start date.',
+        'status.in' => 'The status must be one of the following: Pending, In Progress, Completed.',
+        'project_id.exists' => 'The selected project does not exist.',
+        'employee_id.exists' => 'The selected employee does not exist.',
     ]);
 
-    // Update the task with the validated data
-    $task->update([
+    // Check if validation fails
+    if ($validator->fails()) {
+        return response()->json([
+            'message' => 'Validation error',
+            'errors' => $validator->errors()
+        ], 422); // Unprocessable Entity
+    }
+
+    // Find the task by its ID
+    $task = DB::table('tasks')->where('task_id', $task_id)->first();
+
+    // Check if the task exists
+    if (!$task) {
+        return response()->json(['message' => 'Task not found'], 404); // Not Found
+    }
+
+    $updateData = [
         'task_name' => $request->task_name,
         'description' => $request->description,
         'start_date' => $request->start_date,
@@ -293,12 +321,16 @@ class TaskController extends Controller
         'status' => $request->status,
         'project_id' => $request->project_id,
         'employee_id' => $request->employee_id,
-    ]);
+    ];
 
-    // Return the updated task in the response
-    return response()->json($task, 200);
+    // Update the task data
+    DB::table('tasks')->where('task_id', $task_id)->update($updateData);
+
+    // Log the update and return the response
+    Log::info('Task updated successfully', $updateData);
+
+    return response()->json(['message' => 'Task updated successfully', 'task' => $updateData], 200);
 }
-
 
     // Delete a task
     public function destroy($task_id)
