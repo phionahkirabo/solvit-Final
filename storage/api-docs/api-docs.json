@@ -5,6 +5,22 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/employees/projects": {
+            "get": {
+                "summary": "fetch all tasks",
+                "operationId": "93b42e6c71b7b73fb1f0f82842baffb4",
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/hods/projects": {
             "post": {
                 "tags": [
@@ -770,6 +786,60 @@
                     },
                     "404": {
                         "description": "Task not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "delete tasks under Hods middleware"
+                ],
+                "summary": "delete new task in the system",
+                "description": "authanticate hod will delete new tasks to the system ",
+                "operationId": "delete tasks",
+                "parameters": [
+                    {
+                        "name": "task_id",
+                        "in": "path",
+                        "description": "tasks id to be delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Bad hod input"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/hods/alltasks": {
+            "get": {
+                "summary": "fetch all tasks",
+                "operationId": "5de791a284ff1893dcc3b24c22484e0a",
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
                     }
                 },
                 "security": [
@@ -1619,6 +1689,10 @@
         {
             "name": "update task under Employee middleware",
             "description": "update task under Employee middleware"
+        },
+        {
+            "name": "delete tasks under Hods middleware",
+            "description": "delete tasks under Hods middleware"
         },
         {
             "name": "Authentication",

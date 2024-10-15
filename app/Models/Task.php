@@ -27,5 +27,14 @@ class Task extends Model
         'project_id',
         'employee_id',
     ];
+    public function project()
+    {
+       return $this->belongsTo(Project::class, 'project_id'); 
+    }
+   public function employee()
+    {
+        return $this->belongsTo(Employee::class, 'employee_id'); // assuming 'employee_id' is the foreign key
+    }
+
 }
 

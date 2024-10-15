@@ -14,9 +14,19 @@ use Illuminate\Support\Facades\Log;
 
 class ProjectController extends Controller
 {
-
+     /**
+     * @OA\Get(
+     *     path="/api/employees/projects",
+     *     security={{"Bearer": {}}},
+     *     summary="fetch all tasks",
+     *     @OA\Response(
+     *         response="200",
+     *         description="Successful response"
+     *     )
+     * )
+     */
     // List all projects (Employee)
-    public function index()
+    public function employeesindex()
     {
         $projects = Project::all();
         return response()->json($projects, 200);

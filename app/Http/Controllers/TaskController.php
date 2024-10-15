@@ -331,7 +331,42 @@ class TaskController extends Controller
 
     return response()->json(['message' => 'Task updated successfully', 'task' => $updateData], 200);
 }
-
+/**
+     * @OA\Delete(
+     *      path="/api/hods/tasks/{task_id}",
+     *      security={{"Bearer": {}}},
+     *      operationId="delete tasks",
+     *      tags={"delete tasks under Hods middleware"},
+     *      summary="delete new task in the system",
+     *      description="authanticate hod will delete new tasks to the system ",
+     *      @OA\Parameter(
+     *          name="task_id",
+     *          description="tasks id to be delete",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *     
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad hod input"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource not found"
+     *      )
+     * )
+     */
     // Delete a task
     public function destroy($task_id)
     {
@@ -340,7 +375,18 @@ class TaskController extends Controller
 
         return response()->json(null, 204);
     }
-
+    /**
+     
+     * @OA\Get(
+     *     path="/api/hods/alltasks",
+     *     security={{"Bearer": {}}},
+     *     summary="fetch all tasks",
+     *     @OA\Response(
+     *         response="200",
+     *         description="Successful response"
+     *     )
+     * )
+     */
     // List all tasks
     public function index()
     {

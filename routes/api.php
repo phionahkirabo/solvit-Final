@@ -19,13 +19,13 @@ Route::prefix('hods')->middleware('hod')->group(function () {
     // Add other HOD-specific routes on adding new projects
     Route::post('/employee/create', [authApiController::class, 'addEmployee'])->name('employee.verify.default.password');
 
-   
+    Route::get('/allprojects', [ProjectController::class, 'hodsindex']);
     Route::post('/projects', [ProjectController::class, 'store']);         // Create a new project (HOD only)
     Route::post('/projectsUpdate/{project_id}', [ProjectController::class, 'update']); // Update a project (HOD only)
     Route::delete('/projectsDelete/{project_id}', [ProjectController::class, 'destroy']); // Delete a project (HOD only)
     // route about tasks 
     Route::post('/tasks', [TaskController::class, 'store']); // Create task
-    Route::get('/tasks', [TaskController::class, 'index']); // List all tasks
+    Route::get('/alltasks', [TaskController::class, 'index']); // List all tasks
     Route::get('/tasks/{task_id}', [TaskController::class, 'show']); // Show a task
     Route::put('/tasks/{task_id}', [TaskController::class, 'update']); // Update a task
     Route::delete('/tasks/{task_id}', [TaskController::class, 'destroy']);
@@ -36,7 +36,7 @@ Route::prefix('employees')->middleware('employee')->group(function () {
     // employee resseting new password
     Route::post('/reset-password', [authApiController::class, 'resetPassword']);
     // Routes for Employee actions on projects and comments (protected by 'employee' middleware)
-    Route::get('/projects', [ProjectController::class, 'index']);          // List all projects (Employee)
+    Route::get('/projects', [ProjectController::class, 'employeesindex']);          // List all projects (Employee)
     Route::get('/projects/{project_id}', [ProjectController::class, 'show']);  // Show a specific project (Employee)
     Route::put('/projects/{project_id}/status', [ProjectController::class, 'updateStatus']); // Employee updates project status
      Route::get('/projects/{project_id}/comments', [ProjectCommentController::class, 'index']);  // List comments
