@@ -666,6 +666,15 @@ class authApiController extends Controller
      *          )
      *      ),
      *      @OA\Parameter(
+     *          name="default_password",
+     *          description="given default_password for  creating the employee",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
      *          name="hod_fk_id",
      *          description="ID of the HOD creating the employee",
      *          required=true,
@@ -687,6 +696,7 @@ class authApiController extends Controller
      *                  @OA\Property(property="personalemail", type="string", example="phionahk1@gmail.com"),
      *                  @OA\Property(property="contact_number", type="string", example="0785643266"),
      *                  @OA\Property(property="position", type="string", example="Software Developer"),
+     *                  @OA\Property(property="default_password", type="string", example="e43gh45u"),
      *                  @OA\Property(property="hod_fk_id", type="integer", example=18)
      *              )
      *          )
@@ -718,6 +728,7 @@ class authApiController extends Controller
         'personalemail' => 'required|email|max:255',
         'contact_number' => 'required|numeric|min:10',
         'position' => 'required|string|max:255',
+        'default_password' => 'required|string',
         'hod_fk_id' => 'required|exists:hods,id', 
     ]);
 

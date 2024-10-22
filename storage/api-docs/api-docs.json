@@ -1437,6 +1437,15 @@
                         }
                     },
                     {
+                        "name": "default_password",
+                        "in": "query",
+                        "description": "given default_password for  creating the employee",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "hod_fk_id",
                         "in": "query",
                         "description": "ID of the HOD creating the employee",
@@ -1478,6 +1487,10 @@
                                                 "position": {
                                                     "type": "string",
                                                     "example": "Software Developer"
+                                                },
+                                                "default_password": {
+                                                    "type": "string",
+                                                    "example": "e43gh45u"
                                                 },
                                                 "hod_fk_id": {
                                                     "type": "integer",
