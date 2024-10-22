@@ -21,7 +21,7 @@ class TaskComment extends Model
    
     public function task()
     {
-        return $this->belongsTo(Task::class, 'task_id', 'id'); // Assuming 'id' is the primary key in the Task table
+        return $this->belongsTo(Task::class, 'task_ id', 'id'); // Ass    uming 'id' is the primary key in the Task table
     }
 
 
