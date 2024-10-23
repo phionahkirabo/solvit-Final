@@ -35,6 +35,18 @@ class Task extends Model
     {
         return $this->belongsTo(Employee::class, 'employee_id'); // assuming 'employee_id' is the foreign key
     }
+   public function hod(): BelongsTo
+    {
+        return $this->belongsTo(Hod::class);
+    }
 
+    // Task can have many comments
+    public function comments(): HasMany
+    {
+        return $this->hasMany(TaskComment::class);
+    }
+
+    // Task can belong to an Employee (if needed)
+   
 }
 

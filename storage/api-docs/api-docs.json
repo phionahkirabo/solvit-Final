@@ -498,6 +498,349 @@
                 ]
             }
         },
+        "/api/tasks/{task_id}/comments": {
+            "post": {
+                "tags": [
+                    " Task comments"
+                ],
+                "summary": "Add a new comment on an existing task",
+                "description": "Authenticated HODs and employees can add a new comment to the task.",
+                "operationId": "addComment",
+                "parameters": [
+                    {
+                        "name": "comment",
+                        "in": "query",
+                        "description": "Comment from HOD or employee",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "task_id",
+                        "in": "path",
+                        "description": "tasks tht it is commented",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "hod_id",
+                        "in": "query",
+                        "description": "auth hod that added  the comment",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "employee_id",
+                        "in": "path",
+                        "description": "employee ID  who the comment is related",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Comment successfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "comment": {
+                                            "type": "string",
+                                            "example": "This is a new comment for the task."
+                                        },
+                                        "task_id": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "hod_id": {
+                                            "type": "integer",
+                                            "example": "HOD  id who is authnticated"
+                                        },
+                                        "employee_id": {
+                                            "type": "integer",
+                                            "example": "employee id who is authnticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad input"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/tasks/{task_id}/comments/index": {
+            "get": {
+                "tags": [
+                    "Task comments"
+                ],
+                "summary": "Get all comments for a specific task",
+                "description": "Retrieve all comments associated with a task.",
+                "operationId": "getComments",
+                "parameters": [
+                    {
+                        "name": "task_id",
+                        "in": "path",
+                        "description": "ID of the task",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of comments",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "comment": {
+                                                "type": "string"
+                                            },
+                                            "task_id": {
+                                                "type": "integer"
+                                            },
+                                            "hod_id": {
+                                                "type": "integer"
+                                            },
+                                            "employee_id": {
+                                                "type": "integer"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Task not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/comments/{comment_id}": {
+            "get": {
+                "tags": [
+                    "Task comments"
+                ],
+                "summary": "Show a specific comment",
+                "description": "Retrieve a specific comment by ID.",
+                "operationId": "showComment",
+                "parameters": [
+                    {
+                        "name": "comment_id",
+                        "in": "path",
+                        "description": "ID of the comment",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Comment retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "comment": {
+                                            "type": "string"
+                                        },
+                                        "task_id": {
+                                            "type": "integer"
+                                        },
+                                        "hod_id": {
+                                            "type": "integer"
+                                        },
+                                        "employee_id": {
+                                            "type": "integer"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Comment not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/comments/{comment}": {
+            "put": {
+                "tags": [
+                    "Task comments"
+                ],
+                "summary": "Update a specific comment",
+                "description": "Authenticated HODs and employees can update a comment.",
+                "operationId": "updateComment",
+                "parameters": [
+                    {
+                        "name": "comment",
+                        "in": "path",
+                        "description": "ID of the comment to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "comment",
+                        "in": "query",
+                        "description": "Updated comment text",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Comment successfully updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Comment successfully updated"
+                                        },
+                                        "comment": {
+                                            "properties": {
+                                                "comment": {
+                                                    "type": "string",
+                                                    "example": "Updated comment text."
+                                                },
+                                                "task_id": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "hod_id": {
+                                                    "type": "integer",
+                                                    "example": "HOD ID who is authenticated"
+                                                },
+                                                "employee_id": {
+                                                    "type": "integer",
+                                                    "example": "Employee ID who is authenticated"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Comment not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Task comments"
+                ],
+                "summary": "Delete a specific comment",
+                "description": "Authenticated HODs and employees can delete a comment.",
+                "operationId": "deleteComment",
+                "parameters": [
+                    {
+                        "name": "comment_id",
+                        "in": "path",
+                        "description": "ID of the comment to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Comment successfully deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Comment successfully deleted"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Comment not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/hods/tasks": {
             "post": {
                 "tags": [
@@ -1694,6 +2037,14 @@
         {
             "name": "Count projects by status under Employee middleware",
             "description": "Count projects by status under Employee middleware"
+        },
+        {
+            "name": " Task comments",
+            "description": " Task comments"
+        },
+        {
+            "name": "Task comments",
+            "description": "Task comments"
         },
         {
             "name": "add task under hods middleware",

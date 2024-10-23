@@ -59,6 +59,13 @@ return [];
   {
       return $this->hasMany(Task::class, 'employee_id');
   }
+  public function comments(): HasMany
+    {
+        return $this->hasMany(TaskComment::class);
+    }
+
+   
+    
   
 
 

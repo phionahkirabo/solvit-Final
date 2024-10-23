@@ -5,6 +5,8 @@ use App\Http\Controllers\codecheckcontroller;
 use App\Http\Controllers\ProjectCommentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskCommentController;
+
 
 use App\Http\Controllers\reset_password\forgetpasswordcontroller;
 use App\Http\Controllers\reset_password\resetcontroller;
@@ -69,15 +71,18 @@ Route::post('reset-password/{code}', [authApiController::class, 'resetPassword']
 Route::post('/projects/{project_id}/comments', [ProjectCommentController::class, 'store']); // Employee adds comment to project
 Route::get('/projects/{project_id}/comments', [ProjectCommentController::class, 'index']);  // List comments for a project
 
-Route::middleware(['auth:hod,employee'])->group(function () {
-    Route::prefix('tasks/{task_id}')->group(function () {
-    Route::post('/comments', [ProjectCommentController::class, 'store']);  // Add a task comment
-    Route::get('/comments', [ProjectCommentController::class, 'index']);   // List comments for a task
-    Route::get('/comments/{comment_id}', [ProjectCommentController::class, 'show']); // Show a specific comment
-    Route::put('/comments/{comment_id}', [ProjectCommentController::class, 'update']); // Update a task comment
-    Route::delete('/comments/{comment_id}', [ProjectCommentController::class, 'destroy']); // Delete a task comment
-    });
+
+
+// Apply middleware for HOD and employee authentication
+Route::middleware(['auth.hod-or-employee'])->group(function () {
+    Route::get('tasks/{task_id}/comments/index', [TaskCommentController::class, 'index']);
+    Route::post('tasks/{task_id}/comments', [TaskCommentController::class, 'store']);
+    Route::get('comments/{comment_id}', [TaskCommentController::class, 'show']);
+    Route::put('comments/{comment_id}', [TaskCommentController::class, 'update']);
+    Route::delete('comments/{comment_id}', [TaskCommentController::class, 'destroy']);
 });
+
+
 
 Route::get('/test-db', function() {
     try {

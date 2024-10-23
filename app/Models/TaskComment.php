@@ -9,30 +9,28 @@ class TaskComment extends Model
 {
     use HasFactory;
 
+    // The table associated with the model (optional if table follows Laravel convention)
     protected $table = 'task_comments';
 
-    protected $fillable = [
-        'comment',
-        'task_id',
-        'hod_id',         // Add a field for HOD relationship
-        'employee_id',    // Add a field for Employee relationship
-    ];
+    // The attributes that are mass assignable
+    
+    protected $fillable = ['comment', 'task_id', 'hod_id', 'employee_id'];
 
-   
-    public function task()
+    // TaskComment belongs to a Task
+    public function task(): BelongsTo
     {
-        return $this->belongsTo(Task::class, 'task_ id', 'id'); // Ass    uming 'id' is the primary key in the Task table
+        return $this->belongsTo(Task::class);
     }
 
-
-    public function hod()
+    // TaskComment belongs to a HOD (if applicable)
+    public function hod(): BelongsTo
     {
-        return $this->belongsTo(Hod::class, 'hod_id', 'id'); // Assuming 'id' is the primary key in the Hod table
+        return $this->belongsTo(Hod::class);
     }
 
-   
-    public function employee()
+    // TaskComment belongs to an Employee (if applicable)
+    public function employee(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'employee_id', 'id'); // Assuming 'id' is the primary key in the Employee table
+        return $this->belongsTo(Employee::class);
     }
 }

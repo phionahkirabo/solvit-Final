@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Model;
 
 class Hod extends Authenticatable implements JWTSubject
 {
@@ -35,5 +37,17 @@ class Hod extends Authenticatable implements JWTSubject
         return $this->hasMany(Employee::class, 'hod_fk_id');
     }
 
+
+    // HOD can have many tasks (if needed)
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
+    }
+
+    // HOD can have many comments (if needed)
+    public function comments(): HasMany
+    {
+        return $this->hasMany(TaskComment::class);
+    }
 
 }
