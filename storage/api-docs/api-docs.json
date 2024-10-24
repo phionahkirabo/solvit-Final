@@ -498,6 +498,375 @@
                 ]
             }
         },
+        "/api/reportsindex": {
+            "get": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Get all reports",
+                "description": "Authenticated HODs and employees can view all the reports.",
+                "operationId": "getReports",
+                "responses": {
+                    "200": {
+                        "description": "List of reports",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "title": {
+                                                "type": "string",
+                                                "example": "Quarterly Review"
+                                            },
+                                            "content": {
+                                                "type": "string",
+                                                "example": "This is the report content..."
+                                            },
+                                            "task_id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "employee_id": {
+                                                "type": "integer",
+                                                "example": 2
+                                            },
+                                            "hod_id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/reports": {
+            "post": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Create a new report",
+                "description": "Authenticated HODs or employees can create a new report for a specific task.",
+                "operationId": "createReport",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "Title of the report",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "content",
+                        "in": "query",
+                        "description": "Content of the report",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "task_id",
+                        "in": "query",
+                        "description": "Task ID related to the report",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "employee_id",
+                        "in": "path",
+                        "description": "Employee ID (optional) who submitted the report",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "hod_id",
+                        "in": "path",
+                        "description": "HOD ID (optional) who submitted the report",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Report successfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "title": {
+                                            "type": "string",
+                                            "example": "Quarterly Review"
+                                        },
+                                        "content": {
+                                            "type": "string",
+                                            "example": "This report contains the quarterly review of the project..."
+                                        },
+                                        "task_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "employee_id": {
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "hod_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad input"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/reports/{id}": {
+            "get": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Get a specific report by ID",
+                "description": "Authenticated HODs or employees can retrieve a report by its ID.",
+                "operationId": "showReport",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the report to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Report details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "Quarterly Review"
+                                        },
+                                        "content": {
+                                            "type": "string",
+                                            "example": "This is the report content..."
+                                        },
+                                        "task_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "employee_id": {
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "hod_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Report not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/reports/{report_id}": {
+            "put": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Update an existing report",
+                "description": "Authenticated HODs or employees can update an existing report.",
+                "operationId": "updateReport",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the report to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "Updated title of the report",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "content",
+                        "in": "query",
+                        "description": "Updated content of the report",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Report successfully updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "report_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "Updated Quarterly Review"
+                                        },
+                                        "content": {
+                                            "type": "string",
+                                            "example": "This is the updated report content..."
+                                        },
+                                        "task_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "employee_id": {
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "hod_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad input"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Delete an existing report",
+                "description": "Only authenticated HODs can delete a report.",
+                "operationId": "deleteReport",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the report to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Report successfully deleted"
+                    },
+                    "404": {
+                        "description": "Report not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/tasks/{task_id}/comments": {
             "post": {
                 "tags": [
@@ -2035,6 +2404,10 @@
         {
             "name": "Count projects by status under Employee middleware",
             "description": "Count projects by status under Employee middleware"
+        },
+        {
+            "name": "Reports",
+            "description": "Reports"
         },
         {
             "name": " Task comments",

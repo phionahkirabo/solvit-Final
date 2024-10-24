@@ -6,6 +6,7 @@ use App\Http\Controllers\ProjectCommentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskCommentController;
+use App\Http\Controllers\ReportController;
 
 
 use App\Http\Controllers\reset_password\forgetpasswordcontroller;
@@ -46,6 +47,12 @@ Route::prefix('employees')->middleware('employee')->group(function () {
     Route::get('/projects/{project_id}/comments/{comment_id}', [ProjectCommentController::class, 'show']);  // Show a comment
     Route::put('/projects/{project_id}/comments/{comment_id}', [ProjectCommentController::class, 'update']); // Update a comment
     Route::delete('/projects/{project_id}/comments/{comment_id}', [ProjectCommentController::class, 'destroy']); // Delete a comment
+    Route::get('reportsindex', [ReportController::class, 'index']); // Get all reports
+    Route::post('reports', [ReportController::class, 'store']); // Create a new report
+    Route::get('reports/{id}', [ReportController::class, 'show']); // Get a specific report
+    Route::put('reports/{id}', [ReportController::class, 'update']); // Update a specific report
+    Route::delete('reports/{id}', [ReportController::class, 'destroy']); // Delete a specific report
+
 
    
 });
