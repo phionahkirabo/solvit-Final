@@ -717,9 +717,7 @@
                         "Bearer": []
                     }
                 ]
-            }
-        },
-        "/api/comments/{comment}": {
+            },
             "put": {
                 "tags": [
                     "Task comments"
@@ -729,7 +727,7 @@
                 "operationId": "updateComment",
                 "parameters": [
                     {
-                        "name": "comment",
+                        "name": "comment_id",
                         "in": "path",
                         "description": "ID of the comment to update",
                         "required": true,
