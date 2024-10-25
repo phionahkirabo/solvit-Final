@@ -748,7 +748,7 @@
                 "operationId": "updateReport",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "report_id",
                         "in": "path",
                         "description": "ID of the report to update",
                         "required": true,
@@ -837,7 +837,7 @@
                 "operationId": "deleteReport",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "report_id",
                         "in": "path",
                         "description": "ID of the report to delete",
                         "required": true,

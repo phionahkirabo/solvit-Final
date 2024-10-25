@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Report;
 class ReportController extends Controller
 {
 
@@ -220,7 +220,7 @@ class ReportController extends Controller
      *      description="Authenticated HODs or employees can update an existing report.",
      *    
      *      @OA\Parameter(
-     *          name="id",
+     *          name="report_id",
      *          description="ID of the report to update",
      *          required=true,
      *          in="path",
@@ -275,9 +275,9 @@ class ReportController extends Controller
      */
 
     // Update a specific report
-    public function update(Request $request, $id)
+    public function update(Request $request, $report_id)
     {
-        $report = Report::findOrFail($id);
+        $report = Report::findOrFail($report_id);
 
         $request->validate([
             'title' => 'sometimes|required|string|max:255',
@@ -302,7 +302,7 @@ class ReportController extends Controller
      *      description="Only authenticated HODs can delete a report.",
      *    
      *      @OA\Parameter(
-     *          name="id",
+     *          name="report_id",
      *          description="ID of the report to delete",
      *          required=true,
      *          in="path",
@@ -330,9 +330,9 @@ class ReportController extends Controller
      */
 
     // Delete a specific report
-    public function destroy($id)
+    public function destroy($report_id)
     {
-        $report = Report::findOrFail($id);
+        $report = Report::findOrFail($report_id);
         $report->delete();
 
         return response()->json(null, 204);
