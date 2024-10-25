@@ -32,6 +32,11 @@ Route::prefix('hods')->middleware('hod')->group(function () {
     Route::get('/tasks/{task_id}', [TaskController::class, 'show']); // Show a task
     Route::put('/tasks/{task_id}', [TaskController::class, 'update']); // Update a task
     Route::delete('/tasks/{task_id}', [TaskController::class, 'destroy']);
+    // delete of comment
+    Route::delete('comments/{comment_id}', [TaskCommentController::class, 'destroy']);
+    // delete on report
+    Route::delete('reports/{id}', [ReportController::class, 'destroy']); // Delete a specific report
+
 });
  
 // Employee-specific routes
@@ -81,13 +86,13 @@ Route::middleware(['auth.hod-or-employee'])->group(function () {
     Route::post('tasks/{task_id}/comments', [TaskCommentController::class, 'store']);
     Route::get('comments/{comment_id}', [TaskCommentController::class, 'show']);
     Route::put('comments/{comment_id}', [TaskCommentController::class, 'update']);
-    Route::delete('comments/{comment_id}', [TaskCommentController::class, 'destroy']);
+    
 
     Route::get('reportsindex', [ReportController::class, 'index']); // Get all reports
     Route::post('reports', [ReportController::class, 'store']); // Create a new report
     Route::get('reports/{id}', [ReportController::class, 'show']); // Get a specific report
     Route::put('reports/{id}', [ReportController::class, 'update']); // Update a specific report
-    Route::delete('reports/{id}', [ReportController::class, 'destroy']); // Delete a specific report
+    
 
 });
 
