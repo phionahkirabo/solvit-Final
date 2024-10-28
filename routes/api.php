@@ -62,6 +62,7 @@ Route::get('/employees/projects/status/count', [ProjectController::class, 'count
 //  Route::post('/employeelogin', [authApiController::class, 'employeeLogin']);
  Route::post('/employees-verify-default-password', [authApiController::class, 'verifyDefaultPassword']);
  Route::get('/allhods', [authApiController::class, 'allhods']);
+ Route::get('/allemployee', [authApiController::class, 'allemployees']);
 
  Route::post('/employee-reset-password/{default_password}', [authApiController::class, 'employeeResetPassword']);
 

@@ -2085,6 +2085,22 @@
                 ]
             }
         },
+        "/api/allemployee": {
+            "get": {
+                "summary": "fetch all hods",
+                "operationId": "2768ccfc32142fadf1a171c97c2bce90",
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/hods/employee/create": {
             "post": {
                 "tags": [

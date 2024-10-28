@@ -604,6 +604,21 @@ class authApiController extends Controller
             ], 500);
         }
     }
+      /**
+     * @OA\Get(
+     *     path="/api/allemployee",
+     *     security={{"Bearer": {}}},
+     *     summary="fetch all hods",
+     *     @OA\Response(
+     *         response="200",
+     *         description="Successful response"
+     *     )
+     * )
+     */
+    public function allemployees() {
+        $data=Employee::all();
+        return response()->json(['hods users'=>$data], 200);
+    }
 
     /**
      * @OA\Post(
