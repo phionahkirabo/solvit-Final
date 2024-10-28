@@ -68,4 +68,14 @@ class Kernel extends HttpKernel
         'auth.hod-or-employee' => \App\Http\Middleware\AuthHodOrEmployee::class,
 
     ];
+    protected function schedule(Schedule $schedule)
+   {
+     $schedule->command('notify:tasks')->dailyAt('08:00'); // Runs daily at 8 AM
+   }
+
+   protected $commands = [
+    \App\Console\Commands\SendTaskReminderNotification::class,
+  ];
+  
+
 }

@@ -608,7 +608,7 @@ class authApiController extends Controller
      * @OA\Get(
      *     path="/api/allemployee",
      *     security={{"Bearer": {}}},
-     *     summary="fetch all hods",
+     *     summary="fetch all employees",
      *     @OA\Response(
      *         response="200",
      *         description="Successful response"
