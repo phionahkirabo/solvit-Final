@@ -59,7 +59,7 @@ class TeamController extends Controller
     {
         
         $teams = Team::with(['hod', 'employee'])->get();
-        return resonse()->json(['teams' => $teams], 200);
+        return response()->json(['teams' => $teams], 200);
     }
 
     // 2. Show a Single Team
@@ -73,7 +73,7 @@ class TeamController extends Controller
      *      description="Authenticated HODs can retrieve a team by its ID, along with associated HOD and employee details.",
      *    
      *      @OA\Parameter(
-     *          name="id",
+     *          name="team_id",
      *          description="ID of the team to retrieve",
      *          required=true,
      *          in="path",
@@ -277,7 +277,7 @@ class TeamController extends Controller
     // 4. Update a Team
     /**
      * @OA\Put(
-     *      path="/api/hods/teams/{team_id}",
+     *      path="/api/hods/teamsUpdate/{team_id}",
      *      security={{"Bearer": {}}},
      *      operationId="update",
      *      tags={"Teams"},
@@ -416,12 +416,12 @@ class TeamController extends Controller
             return response()->json(['message' => 'Team not found'], 404);
         }
 
-        $request->validate([
+       $request->validate([
             'profile_picture' => 'nullable|image|max:2048',
             'full_name' => 'required|string',
-            'id_number' => 'required|string|unique:teams,id_number|digits:16,' . $team_id,
+            'id_number' => 'required|string|digits:16|unique:teams,id_number,' . $team_id . ',team_id',
             'nationality' => 'required|string',
-            'email' => 'required|email|unique:teams,email,' . $team_id,
+            'email' => 'required|email|unique:teams,email,' . $team_id . ',team_id',
             'gender' => 'required|in:Male,Female,Other',
         ]);
 

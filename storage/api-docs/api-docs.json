@@ -1661,7 +1661,7 @@
                 "operationId": "showTeam",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "team_id",
                         "in": "path",
                         "description": "ID of the team to retrieve",
                         "required": true,
@@ -1745,180 +1745,6 @@
                     },
                     "403": {
                         "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
-            },
-            "put": {
-                "tags": [
-                    "Teams"
-                ],
-                "summary": "Update an existing team entry",
-                "description": "Authenticated HODs can update details of an existing team entry.",
-                "operationId": "update",
-                "parameters": [
-                    {
-                        "name": "team_id",
-                        "in": "path",
-                        "description": "ID of the team member to update",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "hod_id",
-                        "in": "query",
-                        "description": "ID of the HOD associated with the team",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "employee_id",
-                        "in": "query",
-                        "description": "ID of the employee associated with the team",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "full_name",
-                        "in": "query",
-                        "description": "Full name of the team member",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "id_number",
-                        "in": "query",
-                        "description": "Unique identification number for the team member",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "nationality",
-                        "in": "query",
-                        "description": "Nationality of the team member",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "description": "Email of the team member",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "email"
-                        }
-                    },
-                    {
-                        "name": "gender",
-                        "in": "query",
-                        "description": "Gender of the team member",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "Male",
-                                "Female",
-                                "Other"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "profile_picture",
-                        "in": "query",
-                        "description": "Profile picture of the team member",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "binary"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Team updated successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "team": {
-                                            "properties": {
-                                                "team_id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "hod_id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "employee_id": {
-                                                    "type": "integer",
-                                                    "example": 2
-                                                },
-                                                "full_name": {
-                                                    "type": "string",
-                                                    "example": "John Doe"
-                                                },
-                                                "id_number": {
-                                                    "type": "string",
-                                                    "example": "ID12345"
-                                                },
-                                                "nationality": {
-                                                    "type": "string",
-                                                    "example": "American"
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "johndoe@example.com"
-                                                },
-                                                "gender": {
-                                                    "type": "string",
-                                                    "example": "Male"
-                                                },
-                                                "profile_picture": {
-                                                    "type": "string",
-                                                    "example": "profile_pictures/default.jpg"
-                                                }
-                                            },
-                                            "type": "object"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Team updated successfully"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Validation error or bad input"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    },
-                    "404": {
-                        "description": "Team not found"
                     }
                 },
                 "security": [
@@ -2147,6 +1973,182 @@
                     },
                     "403": {
                         "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/hods/teamsUpdate/{team_id}": {
+            "put": {
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Update an existing team entry",
+                "description": "Authenticated HODs can update details of an existing team entry.",
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "team_id",
+                        "in": "path",
+                        "description": "ID of the team member to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "hod_id",
+                        "in": "query",
+                        "description": "ID of the HOD associated with the team",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "employee_id",
+                        "in": "query",
+                        "description": "ID of the employee associated with the team",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "full_name",
+                        "in": "query",
+                        "description": "Full name of the team member",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id_number",
+                        "in": "query",
+                        "description": "Unique identification number for the team member",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "nationality",
+                        "in": "query",
+                        "description": "Nationality of the team member",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email of the team member",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "email"
+                        }
+                    },
+                    {
+                        "name": "gender",
+                        "in": "query",
+                        "description": "Gender of the team member",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Male",
+                                "Female",
+                                "Other"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "profile_picture",
+                        "in": "query",
+                        "description": "Profile picture of the team member",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "binary"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Team updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "team": {
+                                            "properties": {
+                                                "team_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "hod_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "employee_id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "full_name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "id_number": {
+                                                    "type": "string",
+                                                    "example": "ID12345"
+                                                },
+                                                "nationality": {
+                                                    "type": "string",
+                                                    "example": "American"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "johndoe@example.com"
+                                                },
+                                                "gender": {
+                                                    "type": "string",
+                                                    "example": "Male"
+                                                },
+                                                "profile_picture": {
+                                                    "type": "string",
+                                                    "example": "profile_pictures/default.jpg"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Team updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error or bad input"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Team not found"
                     }
                 },
                 "security": [

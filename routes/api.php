@@ -41,7 +41,7 @@ Route::prefix('hods')->middleware('hod')->group(function () {
     Route::get('/teamsindex', [TeamController::class, 'index']); // List all teams
     Route::get('/teams/{team_id}', [TeamController::class, 'show']); // Show single team
     Route::post('/teams', [TeamController::class, 'store']); // Create team
-    Route::put('/teams/{team_id}', [TeamController::class, 'update']); // Update team
+    Route::put('/teamsUpdate/{team_id}', [TeamController::class, 'update']); // Update team
     Route::delete('/teams/{team_id}', [TeamController::class, 'destroy']); // Delete team
 });
  
