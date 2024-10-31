@@ -49,5 +49,8 @@ class Hod extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(TaskComment::class);
     }
-
+    public function teams()
+    {
+        return $this->hasMany(Team::class, 'hod_id');
+    }
 }

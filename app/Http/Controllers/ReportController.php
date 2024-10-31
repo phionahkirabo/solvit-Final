@@ -50,7 +50,7 @@ class ReportController extends Controller
         return response()->json($reports);
     }
     
-        /**
+    /**
      * @OA\Post(
      *      path="/api/reports",
      *      security={{"Bearer": {}}},
@@ -314,7 +314,7 @@ class ReportController extends Controller
      *          response=204,
      *          description="Report successfully deleted"
      *      ),
-     *      @OA\Response(
+     *      @OA\Response( 
      *          response=404,
      *          description="Report not found"
      *      ),

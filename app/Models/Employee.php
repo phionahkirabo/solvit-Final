@@ -65,7 +65,10 @@ return [];
     }
 
    
-    
+  public function teams()
+    {
+        return $this->hasMany(Team::class, 'employee_id');
+    }
   
 
 

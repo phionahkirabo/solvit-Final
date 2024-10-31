@@ -7,6 +7,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskCommentController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\TeamController;
 
 
 use App\Http\Controllers\reset_password\forgetpasswordcontroller;
@@ -36,7 +37,12 @@ Route::prefix('hods')->middleware('hod')->group(function () {
     Route::delete('comments/{comment_id}', [TaskCommentController::class, 'destroy']);
     // delete on report
     Route::delete('reports/{id}', [ReportController::class, 'destroy']); // Delete a specific report
-
+    //    these routes that are below  are for  the teams
+    Route::get('/teamsindex', [TeamController::class, 'index']); // List all teams
+    Route::get('/teams/{team_id}', [TeamController::class, 'show']); // Show single team
+    Route::post('/teams', [TeamController::class, 'store']); // Create team
+    Route::put('/teams/{team_id}', [TeamController::class, 'update']); // Update team
+    Route::delete('/teams/{team_id}', [TeamController::class, 'destroy']); // Delete team
 });
  
 // Employee-specific routes
