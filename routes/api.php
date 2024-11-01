@@ -22,7 +22,10 @@ Route::middleware('auth:jwt')->get('/user', function (Request $request) {
 Route::prefix('hods')->middleware('hod')->group(function () {
     // Add other HOD-specific routes on adding new projects
     Route::post('/employee/create', [authApiController::class, 'addEmployee'])->name('employee.verify.default.password');
-
+    Route::put('/employee/update/{id}', [authApiController::class, 'updateEmployee']);
+    Route::get('/employee/show/{id}', [authApiController::class, 'showEmployee']);
+    Route::delete('/employee/delete/{id}', [authApiController::class, 'deleteEmployee']);
+            //    Routes about project
     Route::get('/allprojects', [ProjectController::class, 'hodsindex']);
     Route::post('/projects', [ProjectController::class, 'store']);         // Create a new project (HOD only)
     Route::post('/projectsUpdate/{project_id}', [ProjectController::class, 'update']); // Update a project (HOD only)

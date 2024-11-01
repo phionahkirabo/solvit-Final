@@ -2850,6 +2850,266 @@
                 ]
             }
         },
+        "/api/hods/employee/update/{id}": {
+            "put": {
+                "tags": [
+                    "Employee Management"
+                ],
+                "summary": "Update an existing employee",
+                "description": "Update details of an existing employee by their ID",
+                "operationId": "updateEmployee",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the employee to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "employee_name",
+                        "in": "query",
+                        "description": "Updated name of the employee",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Updated company email of the employee (must be unique)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "email",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "personalemail",
+                        "in": "query",
+                        "description": "Updated personal email of the employee",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "email",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "contact_number",
+                        "in": "query",
+                        "description": "Updated contact number of the employee",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "minLength": 10
+                        }
+                    },
+                    {
+                        "name": "position",
+                        "in": "query",
+                        "description": "Updated position of the employee",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Employee successfully updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Employee updated successfully!"
+                                        },
+                                        "employee": {
+                                            "properties": {
+                                                "employee_name": {
+                                                    "type": "string",
+                                                    "example": "kirabo"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "pk@gmail.com"
+                                                },
+                                                "personalemail": {
+                                                    "type": "string",
+                                                    "example": "phionahk1@gmail.com"
+                                                },
+                                                "contact_number": {
+                                                    "type": "string",
+                                                    "example": "0785643266"
+                                                },
+                                                "position": {
+                                                    "type": "string",
+                                                    "example": "Software Developer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad user input"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Employee not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/hods/employee/show/{id}": {
+            "get": {
+                "tags": [
+                    "Employee Management"
+                ],
+                "summary": "Get an employee by ID",
+                "description": "Retrieve details of an employee by their ID",
+                "operationId": "showEmployee",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the employee to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Employee details retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "employee": {
+                                            "properties": {
+                                                "employee_name": {
+                                                    "type": "string",
+                                                    "example": "kirabo"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "pk@gmail.com"
+                                                },
+                                                "personalemail": {
+                                                    "type": "string",
+                                                    "example": "phionahk1@gmail.com"
+                                                },
+                                                "contact_number": {
+                                                    "type": "string",
+                                                    "example": "0785643266"
+                                                },
+                                                "position": {
+                                                    "type": "string",
+                                                    "example": "Software Developer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Employee not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/hods/employee/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Employee Management"
+                ],
+                "summary": "Delete an employee by ID",
+                "description": "Delete an employee's record by their ID",
+                "operationId": "deleteEmployee",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the employee to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Employee deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Employee deleted successfully!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Employee not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/employees-verify-default-password": {
             "post": {
                 "tags": [

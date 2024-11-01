@@ -735,42 +735,286 @@ class authApiController extends Controller
      * )
      */
 
- public function addEmployee(Request $request)
-{
-    $request->validate([
-        'employee_name' => 'required|string|max:255',
-        'email' => 'required|email|unique:employees,email|max:255|unique:hods,email',
-        'personalemail' => 'required|email|max:255',
-        'contact_number' => 'required|numeric|min:10',
-        'position' => 'required|string|max:255',
-        'default_password' => 'required|string',
-        'hod_fk_id' => 'required|exists:hods,id', 
-    ]);
+    public function addEmployee(Request $request)
+        {
+            $request->validate([
+                'employee_name' => 'required|string|max:255',
+                'email' => 'required|email|unique:employees,email|max:255|unique:hods,email',
+                'personalemail' => 'required|email|max:255',
+                'contact_number' => 'required|numeric|min:10',
+                'position' => 'required|string|max:255',
+                'default_password' => 'required|string',
+                'hod_fk_id' => 'required|exists:hods,id', 
+            ]);
 
-    // Generate default password
-    $defaultPassword = Str::random(8);
+            // Generate default password
+            $defaultPassword = Str::random(8);
 
-    // Create employee
-    $employee = Employee::create([
-        'employee_name' => $request->employee_name,
-        'email' => $request->email,
-        'personalemail' => $request->personalemail,
-        'contact_number' => $request->contact_number,
-        'position' => $request->position,
-        'hod_fk_id' => auth('hod')->id(), // Use the 'hod' guard to get the authenticated HOD ID
-        'default_password' =>$defaultPassword, // Hash the default password
-    ]);
+            // Create employee
+            $employee = Employee::create([
+                'employee_name' => $request->employee_name,
+                'email' => $request->email,
+                'personalemail' => $request->personalemail,
+                'contact_number' => $request->contact_number,
+                'position' => $request->position,
+                'hod_fk_id' => auth('hod')->id(), // Use the 'hod' guard to get the authenticated HOD ID
+                'default_password' =>$defaultPassword, // Hash the default password
+            ]);
 
-    // Send email to employee with default password and link to set a new password
-    $verificationLink = route('employee.verify.default.password', ['email' => $employee->personalemail]);
+            // Send email to employee with default password and link to set a new password
+            $verificationLink = route('employee.verify.default.password', ['email' => $employee->personalemail]);
 
-    Mail::to($employee->personalemail)->send(new EmployeeCreated($employee, $defaultPassword, $verificationLink));
+            Mail::to($employee->personalemail)->send(new EmployeeCreated($employee, $defaultPassword, $verificationLink));
 
-    return response()->json([
-        'message' => 'Employee created successfully, email sent!',
-        'employee' => $employee
-    ], 201);
-}
+            return response()->json([
+                'message' => 'Employee created successfully, email sent!',
+                'employee' => $employee
+            ], 201);
+        }
+
+    /**
+     * @OA\Put(
+     *      path="/api/hods/employee/update/{id}",
+     *      security={{"Bearer": {}}},
+     *      operationId="updateEmployee",
+     *      tags={"Employee Management"},
+     *      summary="Update an existing employee",
+     *      description="Update details of an existing employee by their ID",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="ID of the employee to update",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="employee_name",
+     *          description="Updated name of the employee",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              maxLength=255
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="email",
+     *          description="Updated company email of the employee (must be unique)",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              format="email",
+     *              maxLength=255
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="personalemail",
+     *          description="Updated personal email of the employee",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              format="email",
+     *              maxLength=255
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="contact_number",
+     *          description="Updated contact number of the employee",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              minLength=10
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="position",
+     *          description="Updated position of the employee",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              maxLength=255
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Employee successfully updated",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="message", type="string", example="Employee updated successfully!"),
+     *              @OA\Property(property="employee", type="object",
+     *                  @OA\Property(property="employee_name", type="string", example="kirabo"),
+     *                  @OA\Property(property="email", type="string", example="pk@gmail.com"),
+     *                  @OA\Property(property="personalemail", type="string", example="phionahk1@gmail.com"),
+     *                  @OA\Property(property="contact_number", type="string", example="0785643266"),
+     *                  @OA\Property(property="position", type="string", example="Software Developer")
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad user input"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Employee not found"
+     *      )
+     * )
+     */
+     public function updateEmployee(Request $request, $id)
+     {
+        // Find the employee by ID
+        $employee = Employee::findOrFail($id);
+
+        // Validate the request data
+        $request->validate([
+            'employee_name' => 'sometimes|required|string|max:255',
+            'email' => 'sometimes|required|email|max:255|unique:employees,email,' . $employee->id,
+            'personalemail' => 'sometimes|required|email|max:255',
+            'contact_number' => 'sometimes|required|numeric|min:10',
+            'position' => 'sometimes|required|string|max:255',
+        ]);
+
+        // Update the employee details
+        $employee->update([
+            'employee_name' => $request->employee_name ?? $employee->employee_name,
+            'email' => $request->email ?? $employee->email,
+            'personalemail' => $request->personalemail ?? $employee->personalemail,
+            'contact_number' => $request->contact_number ?? $employee->contact_number,
+            'position' => $request->position ?? $employee->position,
+        ]);
+
+        return response()->json([
+            'message' => 'Employee updated successfully!',
+            'employee' => $employee
+        ], 200);
+    }
+
+    /**
+     * @OA\Get(
+     *      path="/api/hods/employee/show/{id}",
+     *      security={{"Bearer": {}}},
+     *      operationId="showEmployee",
+     *      tags={"Employee Management"},
+     *      summary="Get an employee by ID",
+     *      description="Retrieve details of an employee by their ID",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="ID of the employee to retrieve",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Employee details retrieved successfully",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="employee", type="object",
+     *                  @OA\Property(property="employee_name", type="string", example="kirabo"),
+     *                  @OA\Property(property="email", type="string", example="pk@gmail.com"),
+     *                  @OA\Property(property="personalemail", type="string", example="phionahk1@gmail.com"),
+     *                  @OA\Property(property="contact_number", type="string", example="0785643266"),
+     *                  @OA\Property(property="position", type="string", example="Software Developer")
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Employee not found"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     * )
+     */
+    public function showEmployee($id)
+    {
+        $employee = Employee::find($id);
+
+        if (!$employee) {
+            return response()->json(['message' => 'Employee not found'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Employee retrieved successfully!',
+            'employee' => $employee
+        ], 200);
+    }
+
+    /**
+     * @OA\Delete(
+     *      path="/api/hods/employee/delete/{id}",
+     *      security={{"Bearer": {}}},
+     *      operationId="deleteEmployee",
+     *      tags={"Employee Management"},
+     *      summary="Delete an employee by ID",
+     *      description="Delete an employee's record by their ID",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="ID of the employee to delete",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Employee deleted successfully",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="message", type="string", example="Employee deleted successfully!")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Employee not found"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     * )
+     */
+    public function deleteEmployee($id)
+    {
+        $employee = Employee::find($id);
+
+        if (!$employee) {
+            return response()->json(['message' => 'Employee not found'], 404);
+        }
+
+        $employee->delete();
+
+        return response()->json([
+            'message' => 'Employee deleted successfully!'
+        ], 200);
+    }
 
     /**
      * @OA\Post(
@@ -820,7 +1064,7 @@ class authApiController extends Controller
      *      )
      * )
      */
-
+     
  public function verifyDefaultPassword(Request $request)
     {
         Log::info('Verifying default password', ['request' => $request->all()]);
