@@ -88,7 +88,7 @@ class ProjectController extends Controller
 
 
     // Show a specific project (Employee)
-    public function show($project_id)
+    public function showProject($project_id)
     {
         $project = Project::findOrFail($project_id);
         return response()->json($project, 200);

@@ -21,6 +21,102 @@
                 ]
             }
         },
+        "/api/hods/projects/{project_id}": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get a specific project by ID",
+                "description": "Authenticated HODs can retrieve a project by its ID, including project details and HOD information.",
+                "operationId": "showProject",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "ID of the project to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Project details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "project_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "project_name": {
+                                            "type": "string",
+                                            "example": "New Website Development"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "A project to develop the new company website."
+                                        },
+                                        "start_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2024-01-01"
+                                        },
+                                        "end_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2024-12-31"
+                                        },
+                                        "project_category": {
+                                            "type": "string",
+                                            "example": "Software Development"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Active"
+                                        },
+                                        "hod": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Jane Smith"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "jane.smith@example.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Project not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/hods/projects": {
             "post": {
                 "tags": [
@@ -3260,6 +3356,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Projects",
+            "description": "Projects"
+        },
         {
             "name": "add project underHods middleware",
             "description": "add project underHods middleware"
