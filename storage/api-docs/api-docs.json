@@ -24,7 +24,7 @@
         "/api/hods/projectsShow/{project_id}": {
             "get": {
                 "tags": [
-                    "Projects"
+                    "Projects shows"
                 ],
                 "summary": "Get a specific project by ID",
                 "description": "Authenticated HODs can retrieve a project by its ID, including project details and HOD information.",
@@ -3357,8 +3357,8 @@
     },
     "tags": [
         {
-            "name": "Projects",
-            "description": "Projects"
+            "name": "Projects shows",
+            "description": "Projects shows"
         },
         {
             "name": "add project underHods middleware",
