@@ -33,13 +33,13 @@ class authApiController extends Controller
      *     summary="fetch all hods",
      *     @OA\Response(
      *         response="200",
-     *         description="Successful response"
+     *         description="Successful response"       
      *     )
      * )
      */
     public function allhods() {
         $data=Hod::all();
-        return response()->json(['hods users'=>$data], 200);
+        return response()->json(['hods-users'=>$data], 200);
     }
 
     /**
@@ -617,7 +617,7 @@ class authApiController extends Controller
      */
     public function allemployees() {
         $data=Employee::all();
-        return response()->json(['hods users'=>$data], 200);
+        return response()->json(['empoyees-users'=>$data], 200);
     }
 
     /**
