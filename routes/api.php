@@ -53,10 +53,9 @@ Route::prefix('employees')->middleware('employee')->group(function () {
     // employee resseting new password
     Route::post('/reset-password', [authApiController::class, 'resetPassword']);
     // Routes for Employee actions on projects and comments (protected by 'employee' middleware)
-    // Route::get('/projects', [ProjectController::class, 'employeesindex']);          // List all projects (Employee)
+   
     // Route::get('/projects/{project_id}', [ProjectController::class, 'show']);  // Show a specific project (Employee)
-    // Route::put('/projects/{project_id}/status', [ProjectController::class, 'updateStatus']); // Employee updates project status
-    
+   
    
 
    
