@@ -26,7 +26,7 @@ Route::prefix('hods')->middleware('hod')->group(function () {
     Route::get('/employee/show/{id}', [authApiController::class, 'showEmployee']);
     Route::delete('/employee/delete/{id}', [authApiController::class, 'deleteEmployee']);
             //    Routes about project
-    Route::get('/allprojects', [ProjectController::class, 'hodsProjectIndex']);
+    Route::get('/allProjects', [ProjectController::class, 'hodsProjectIndex']);
     Route::post('/projects', [ProjectController::class, 'store']);         // Create a new project (HOD only)
     Route::post('/projectsUpdate/{project_id}', [ProjectController::class, 'update']); // Update a project (HOD only)
     Route::delete('/projectsDelete/{project_id}', [ProjectController::class, 'destroy']); // Delete a project (HOD only)

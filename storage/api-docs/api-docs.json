@@ -5,10 +5,10 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/hods/projects": {
+        "/api/hods/allProjects": {
             "get": {
                 "summary": "fetch all project",
-                "operationId": "e5ddea53445bcb949c2d13d6478efb35",
+                "operationId": "8a7cb204751318bd4558e9cae179703b",
                 "responses": {
                     "200": {
                         "description": "Successful response"
@@ -19,7 +19,9 @@
                         "Bearer": []
                     }
                 ]
-            },
+            }
+        },
+        "/api/hods/projects": {
             "post": {
                 "tags": [
                     "add project underHods middleware"

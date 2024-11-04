@@ -16,7 +16,7 @@ class ProjectController extends Controller
 {
      /**
      * @OA\Get(
-     *     path="/api/hods/projects",
+     *     path="/api/hods/allProjects",
      *     security={{"Bearer": {}}},
      *     summary="fetch all project",
      *     @OA\Response(
