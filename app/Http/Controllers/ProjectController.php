@@ -31,6 +31,61 @@ class ProjectController extends Controller
         $projects = Project::all();
         return response()->json($projects, 200);
     }
+        /**
+     * @OA\Get(
+     *      path="/api/hods/projects/{project_id}",
+     *      security={{"Bearer": {}}},
+     *      operationId="showProject",
+     *      tags={"Projects"},
+     *      summary="Get a specific project by ID",
+     *      description="Authenticated HODs can retrieve a project by its ID, including project details and HOD information.",
+     *    
+     *      @OA\Parameter(
+     *          name="project_id",
+     *          description="ID of the project to retrieve",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      
+     *      @OA\Response(
+     *          response=200,
+     *          description="Project details",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="project_id", type="integer", example=1),
+     *              @OA\Property(property="project_name", type="string", example="New Website Development"),
+     *              @OA\Property(property="description", type="string", example="A project to develop the new company website."),
+     *              @OA\Property(property="start_date", type="string", format="date", example="2024-01-01"),
+     *              @OA\Property(property="end_date", type="string", format="date", example="2024-12-31"),
+     *              @OA\Property(property="project_category", type="string", example="Software Development"),
+     *              @OA\Property(property="status", type="string", example="Active"),
+     *              @OA\Property(
+     *                  property="hod",
+     *                  type="object",
+     *                  @OA\Property(property="id", type="integer", example=1),
+     *                  @OA\Property(property="name", type="string", example="Jane Smith"),
+     *                  @OA\Property(property="email", type="string", example="jane.smith@example.com")
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Project not found"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     * )
+     */
+
 
     // Show a specific project (Employee)
     public function show($project_id)
