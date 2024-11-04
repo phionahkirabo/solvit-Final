@@ -46,7 +46,7 @@
         <p>We're excited to have you join our team.</p>
         <p>Your default password is: <strong>{{ $defaultPassword }}</strong></p>
         <p>To set a new password, please click the link below:</p>
-        <p><a href="{{ $verificationLink }}" target="_blank">Set New Password</a></p>
+        <p><a href="http://localhost:5173/change-password" target="_blank">Set New Password</a></p>
         <p>If you have any questions or need assistance, feel free to reply to this email.</p>
         <div class="footer">
             <p>Best regards,</p>
