@@ -36,7 +36,7 @@ class ProjectController extends Controller
      *      path="/api/hods/projectsShow/{project_id}",
      *      security={{"Bearer": {}}},
      *      operationId="showProject",
-     *      tags={"Projects"},
+     *      tags={"Projects shows"},
      *      summary="Get a specific project by ID",
      *      description="Authenticated HODs can retrieve a project by its ID, including project details and HOD information.",
      *    
