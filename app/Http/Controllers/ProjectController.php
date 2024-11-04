@@ -16,9 +16,9 @@ class ProjectController extends Controller
 {
      /**
      * @OA\Get(
-     *     path="/api/employees/projects",
+     *     path="/api/hods/projects",
      *     security={{"Bearer": {}}},
-     *     summary="fetch all tasks",
+     *     summary="fetch all project",
      *     @OA\Response(
      *         response="200",
      *         description="Successful response"
@@ -26,7 +26,7 @@ class ProjectController extends Controller
      * )
      */
     // List all projects (Employee)
-    public function employeesindex()
+    public function hodsProjectIndex()
     {
         $projects = Project::all();
         return response()->json($projects, 200);

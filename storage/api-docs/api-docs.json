@@ -5,10 +5,10 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/employees/projects": {
+        "/api/hods/projects": {
             "get": {
-                "summary": "fetch all tasks",
-                "operationId": "93b42e6c71b7b73fb1f0f82842baffb4",
+                "summary": "fetch all project",
+                "operationId": "e5ddea53445bcb949c2d13d6478efb35",
                 "responses": {
                     "200": {
                         "description": "Successful response"
@@ -19,9 +19,7 @@
                         "Bearer": []
                     }
                 ]
-            }
-        },
-        "/api/hods/projects": {
+            },
             "post": {
                 "tags": [
                     "add project underHods middleware"

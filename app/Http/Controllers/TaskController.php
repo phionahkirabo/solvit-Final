@@ -394,4 +394,6 @@ class TaskController extends Controller
         $tasks = Task::with(['project', 'employee'])->get();
         return response()->json($tasks, 200);
     }
+    
+
 }

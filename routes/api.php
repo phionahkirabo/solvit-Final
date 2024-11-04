@@ -26,7 +26,7 @@ Route::prefix('hods')->middleware('hod')->group(function () {
     Route::get('/employee/show/{id}', [authApiController::class, 'showEmployee']);
     Route::delete('/employee/delete/{id}', [authApiController::class, 'deleteEmployee']);
             //    Routes about project
-    Route::get('/allprojects', [ProjectController::class, 'hodsindex']);
+    Route::get('/allprojects', [ProjectController::class, 'hodsProjectIndex']);
     Route::post('/projects', [ProjectController::class, 'store']);         // Create a new project (HOD only)
     Route::post('/projectsUpdate/{project_id}', [ProjectController::class, 'update']); // Update a project (HOD only)
     Route::delete('/projectsDelete/{project_id}', [ProjectController::class, 'destroy']); // Delete a project (HOD only)
@@ -53,14 +53,10 @@ Route::prefix('employees')->middleware('employee')->group(function () {
     // employee resseting new password
     Route::post('/reset-password', [authApiController::class, 'resetPassword']);
     // Routes for Employee actions on projects and comments (protected by 'employee' middleware)
-    Route::get('/projects', [ProjectController::class, 'employeesindex']);          // List all projects (Employee)
-    Route::get('/projects/{project_id}', [ProjectController::class, 'show']);  // Show a specific project (Employee)
-    Route::put('/projects/{project_id}/status', [ProjectController::class, 'updateStatus']); // Employee updates project status
-     Route::get('/projects/{project_id}/comments', [ProjectCommentController::class, 'index']);  // List comments
-    Route::post('/projects/{project_id}/addComments', [ProjectCommentController::class, 'store']); // Add a comment
-    Route::get('/projects/{project_id}/comments/{comment_id}', [ProjectCommentController::class, 'show']);  // Show a comment
-    Route::put('/projects/{project_id}/comments/{comment_id}', [ProjectCommentController::class, 'update']); // Update a comment
-    Route::delete('/projects/{project_id}/comments/{comment_id}', [ProjectCommentController::class, 'destroy']); // Delete a comment
+    // Route::get('/projects', [ProjectController::class, 'employeesindex']);          // List all projects (Employee)
+    // Route::get('/projects/{project_id}', [ProjectController::class, 'show']);  // Show a specific project (Employee)
+    // Route::put('/projects/{project_id}/status', [ProjectController::class, 'updateStatus']); // Employee updates project status
+    
    
 
    
@@ -85,8 +81,8 @@ Route::post('forgot-password', [authApiController::class, 'forgotPassword']);
 Route::post('verify-code', [authApiController::class, 'verifyCode']);
 Route::post('reset-password/{code}', [authApiController::class, 'resetPassword']);
  // Project Comments for Employees
-Route::post('/projects/{project_id}/comments', [ProjectCommentController::class, 'store']); // Employee adds comment to project
-Route::get('/projects/{project_id}/comments', [ProjectCommentController::class, 'index']);  // List comments for a project
+// Route::post('/projects/{project_id}/comments', [ProjectCommentController::class, 'store']); // Employee adds comment to project
+// Route::get('/projects/{project_id}/comments', [ProjectCommentController::class, 'index']);  // List comments for a project
 
 
 
