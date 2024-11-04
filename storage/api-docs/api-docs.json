@@ -21,7 +21,7 @@
                 ]
             }
         },
-        "/api/hods/projects/{project_id}": {
+        "/api/hods/projectsShow/{project_id}": {
             "get": {
                 "tags": [
                     "Projects"

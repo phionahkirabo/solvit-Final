@@ -33,7 +33,7 @@ class ProjectController extends Controller
     }
         /**
      * @OA\Get(
-     *      path="/api/hods/projects/{project_id}",
+     *      path="/api/hods/projectsShow/{project_id}",
      *      security={{"Bearer": {}}},
      *      operationId="showProject",
      *      tags={"Projects"},
