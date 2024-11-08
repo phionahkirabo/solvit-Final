@@ -28,6 +28,7 @@ class TeamController extends Controller
      *                  @OA\Property(property="id_number", type="string", example="ID12345"),
      *                  @OA\Property(property="nationality", type="string", example="American"),
      *                  @OA\Property(property="email", type="string", example="johndoe@example.com"),
+     *                  @OA\Property(property="team", type="string", example="AI"),  // Add the 'team' property
      *                  @OA\Property(property="gender", type="string", example="Male"),
      *                  @OA\Property(property="profile_picture", type="string", example="https://example.com/profile.jpg"),
      *                  @OA\Property(
@@ -92,6 +93,7 @@ class TeamController extends Controller
      *              @OA\Property(property="id_number", type="string", example="ID12345"),
      *              @OA\Property(property="nationality", type="string", example="American"),
      *              @OA\Property(property="email", type="string", example="johndoe@example.com"),
+     *              @OA\Property(property="team", type="string", example="AI"), // Add 'team' field here
      *              @OA\Property(property="gender", type="string", example="Male"),
      *              @OA\Property(property="profile_picture", type="string", example="https://example.com/profile.jpg"),
      *              @OA\Property(
@@ -231,6 +233,7 @@ class TeamController extends Controller
      *                  @OA\Property(property="nationality", type="string", example="American"),
      *                  @OA\Property(property="email", type="string", example="johndoe@example.com"),
      *                  @OA\Property(property="gender", type="string", example="Male"),
+     *                  @OA\Property(property="team", type="string", example="AI") // Added the 'team' field
      *                  @OA\Property(property="profile_picture", type="string", example="profile_pictures/default.jpg")
      *              ),
      *              @OA\Property(property="message", type="string", example="Team created successfully")
@@ -261,6 +264,7 @@ class TeamController extends Controller
             'nationality' => 'required|string',
             'email' => 'required|email|unique:teams,email',
             'gender' => 'required|in:Male,Female,Other',
+            'team' => 'required|in:Data Science and Information Systems,Cybersecurity,Project Management,Research,MEAL,Marketing,Sales and Revenue,AI', 
         ]);
 
         $data = $request->all();
@@ -383,6 +387,7 @@ class TeamController extends Controller
      *                  @OA\Property(property="nationality", type="string", example="American"),
      *                  @OA\Property(property="email", type="string", example="johndoe@example.com"),
      *                  @OA\Property(property="gender", type="string", example="Male"),
+     *                  @OA\Property(property="team", type="string", example="AI") // Added 'team' field
      *                  @OA\Property(property="profile_picture", type="string", example="profile_pictures/default.jpg")
      *              ),
      *              @OA\Property(property="message", type="string", example="Team updated successfully")
@@ -423,6 +428,7 @@ class TeamController extends Controller
             'nationality' => 'required|string',
             'email' => 'required|email|unique:teams,email,' . $team_id . ',team_id',
             'gender' => 'required|in:Male,Female,Other',
+            'team' => 'required|in:Data Science and Information Systems,Cybersecurity,Project Management,Research,MEAL,Marketing,Sales and Revenue,AI', 
         ]);
 
         $data = $request->all();

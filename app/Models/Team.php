@@ -19,6 +19,7 @@ class Team extends Model
         'nationality',
         'email',
         'gender',
+        'team',
     ];
 
     // Define the relationship with the HOD model (belongs to one HOD)
