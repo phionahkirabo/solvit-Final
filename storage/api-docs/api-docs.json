@@ -1696,6 +1696,10 @@
                                                 "type": "string",
                                                 "example": "Male"
                                             },
+                                            "add_to_team": {
+                                                "type": "string",
+                                                "example": "AI"
+                                            },
                                             "profile_picture": {
                                                 "type": "string",
                                                 "example": "https://example.com/profile.jpg"
@@ -1793,9 +1797,17 @@
                                             "type": "string",
                                             "example": "johndoe@example.com"
                                         },
+                                        "team": {
+                                            "type": "string",
+                                            "example": "AI"
+                                        },
                                         "gender": {
                                             "type": "string",
                                             "example": "Male"
+                                        },
+                                        "add_to_team": {
+                                            "type": "string",
+                                            "example": "AI"
                                         },
                                         "profile_picture": {
                                             "type": "string",
@@ -1993,6 +2005,25 @@
                         }
                     },
                     {
+                        "name": "add_to_team",
+                        "in": "query",
+                        "description": "Department or team the employee will belong to",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Data Science and Information Systems",
+                                "Cybersecurity",
+                                "Project Management",
+                                "Research",
+                                "MEAL",
+                                "Marketing",
+                                "Sales and Revenue",
+                                "AI"
+                            ]
+                        }
+                    },
+                    {
                         "name": "profile_picture",
                         "in": "query",
                         "description": "Profile picture of the team member",
@@ -2043,6 +2074,10 @@
                                                 "gender": {
                                                     "type": "string",
                                                     "example": "Male"
+                                                },
+                                                "add_to_team": {
+                                                    "type": "string",
+                                                    "example": "AI"
                                                 },
                                                 "profile_picture": {
                                                     "type": "string",
@@ -2166,6 +2201,25 @@
                         }
                     },
                     {
+                        "name": "add_to_team",
+                        "in": "query",
+                        "description": "add_to_team of the team member",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Data Science and Information Systems",
+                                "Cybersecurity",
+                                "Project Management",
+                                "Research",
+                                "MEAL",
+                                "Marketing",
+                                "Sales and Revenue",
+                                "AI"
+                            ]
+                        }
+                    },
+                    {
                         "name": "profile_picture",
                         "in": "query",
                         "description": "Profile picture of the team member",
@@ -2216,6 +2270,10 @@
                                                 "gender": {
                                                     "type": "string",
                                                     "example": "Male"
+                                                },
+                                                "add_to_team": {
+                                                    "type": "string",
+                                                    "example": "AI"
                                                 },
                                                 "profile_picture": {
                                                     "type": "string",

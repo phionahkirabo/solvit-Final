@@ -8,54 +8,56 @@ class TeamController extends Controller
 {
     // 1. List All Teams
     /**
-     * @OA\Get(
-     *      path="/api/hods/teamsindex",
-     *      security={{"Bearer": {}}},
-     *      operationId="getTeams",
-     *      tags={"Teams"},
-     *      summary="Get all teams",
-     *      description="Authenticated HODs can view all teams with employee and HOD details.",
-     *    
-     *      @OA\Response(
-     *          response=200,
-     *          description="List of teams",
-     *          @OA\JsonContent(
-     *              type="array",
-     *              @OA\Items(
-     *                  type="object",
-     *                  @OA\Property(property="team_id", type="integer", example=1),
-     *                  @OA\Property(property="full_name", type="string", example="John Doe"),
-     *                  @OA\Property(property="id_number", type="string", example="ID12345"),
-     *                  @OA\Property(property="nationality", type="string", example="American"),
-     *                  @OA\Property(property="email", type="string", example="johndoe@example.com"),
-     *                  @OA\Property(property="team", type="string", example="AI"),  // Add the 'team' property
-     *                  @OA\Property(property="gender", type="string", example="Male"),
-     *                  @OA\Property(property="profile_picture", type="string", example="https://example.com/profile.jpg"),
-     *                  @OA\Property(
-     *                      property="hod",
-     *                      type="object",
-     *                      @OA\Property(property="id", type="integer", example=1),
-     *                      @OA\Property(property="name", type="string", example="Jane Smith")
-     *                  ),
-     *                  @OA\Property(
-     *                      property="employee",
-     *                      type="object",
-     *                      @OA\Property(property="id", type="integer", example=2),
-     *                      @OA\Property(property="name", type="string", example="John Doe")
-     *                  )
-     *              )
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated"
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      )
-     * )
-     */
+ * @OA\Get(
+ *      path="/api/hods/teamsindex",
+ *      security={{"Bearer": {}}},
+ *      operationId="getTeams",
+ *      tags={"Teams"},
+ *      summary="Get all teams",
+ *      description="Authenticated HODs can view all teams with employee and HOD details.",
+ *    
+ *      @OA\Response(
+ *          response=200,
+ *          description="List of teams",
+ *          @OA\JsonContent(
+ *              type="array",
+ *              @OA\Items(
+ *                  type="object",
+ *                  @OA\Property(property="team_id", type="integer", example=1),
+ *                  @OA\Property(property="full_name", type="string", example="John Doe"),
+ *                  @OA\Property(property="id_number", type="string", example="ID12345"),
+ *                  @OA\Property(property="nationality", type="string", example="American"),
+ *                  @OA\Property(property="email", type="string", example="johndoe@example.com"),
+ *               
+ *                  @OA\Property(property="gender", type="string", example="Male"),
+ *                  @OA\Property(property="add_to_team", type="string", example="AI"),
+ *                  @OA\Property(property="profile_picture", type="string", example="https://example.com/profile.jpg"),
+ *                  @OA\Property(
+ *                      property="hod",
+ *                      type="object",
+ *                      @OA\Property(property="id", type="integer", example=1),
+ *                      @OA\Property(property="name", type="string", example="Jane Smith")
+ *                  ),
+ *                  @OA\Property(
+ *                      property="employee",
+ *                      type="object",
+ *                      @OA\Property(property="id", type="integer", example=2),
+ *                      @OA\Property(property="name", type="string", example="John Doe")
+ *                  )
+ *              )
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response=401,
+ *          description="Unauthenticated"
+ *      ),
+ *      @OA\Response(
+ *          response=403,
+ *          description="Forbidden"
+ *      )
+ * )
+ */
+
     public function index()
     {
         
@@ -93,8 +95,9 @@ class TeamController extends Controller
      *              @OA\Property(property="id_number", type="string", example="ID12345"),
      *              @OA\Property(property="nationality", type="string", example="American"),
      *              @OA\Property(property="email", type="string", example="johndoe@example.com"),
-     *              @OA\Property(property="team", type="string", example="AI"), // Add 'team' field here
+     *              @OA\Property(property="team", type="string", example="AI"), 
      *              @OA\Property(property="gender", type="string", example="Male"),
+     *              @OA\Property(property="add_to_team", type="string", example="AI"),
      *              @OA\Property(property="profile_picture", type="string", example="https://example.com/profile.jpg"),
      *              @OA\Property(
      *                  property="hod",
@@ -209,13 +212,23 @@ class TeamController extends Controller
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="profile_picture",
-     *          description="Profile picture of the team member",
-     *          required=false,
-     *          in="query",
-     *          @OA\Schema(
-     *              type="string",
-     *              format="binary"
+    *        name="add_to_team",
+    *        description="Department or team the employee will belong to",
+    *        required=false,
+    *        in="query",
+    *        @OA\Schema(
+    *        type="string",
+    *        enum={"Data Science and Information Systems", "Cybersecurity", "Project Management", "Research", "MEAL", "Marketing", "Sales and Revenue", "AI"}
+    *  )
+    *      ),
+    *      @OA\Parameter(
+    *          name="profile_picture",
+    *          description="Profile picture of the team member",
+    *          required=false,
+    *          in="query",
+    *          @OA\Schema(
+    *              type="string",
+    *              format="binary"
      *          )
      *      ),
      *      
@@ -233,7 +246,7 @@ class TeamController extends Controller
      *                  @OA\Property(property="nationality", type="string", example="American"),
      *                  @OA\Property(property="email", type="string", example="johndoe@example.com"),
      *                  @OA\Property(property="gender", type="string", example="Male"),
-     *                  @OA\Property(property="team", type="string", example="AI") // Added the 'team' field
+     *                  @OA\Property(property="add_to_team", type="string", example="AI"),
      *                  @OA\Property(property="profile_picture", type="string", example="profile_pictures/default.jpg")
      *              ),
      *              @OA\Property(property="message", type="string", example="Team created successfully")
@@ -264,7 +277,7 @@ class TeamController extends Controller
             'nationality' => 'required|string',
             'email' => 'required|email|unique:teams,email',
             'gender' => 'required|in:Male,Female,Other',
-            'team' => 'required|in:Data Science and Information Systems,Cybersecurity,Project Management,Research,MEAL,Marketing,Sales and Revenue,AI', 
+            'add_to_team' => 'required|in:Data Science and Information Systems,Cybersecurity,Project Management,Research,MEAL,Marketing,Sales and Revenue,AI', 
         ]);
 
         $data = $request->all();
@@ -348,6 +361,7 @@ class TeamController extends Controller
      *          required=false,
      *          in="query",
      *          @OA\Schema(
+     *  
      *              type="string",
      *              format="email"
      *          )
@@ -360,6 +374,16 @@ class TeamController extends Controller
      *          @OA\Schema(
      *              type="string",
      *              enum={"Male", "Female", "Other"}
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="add_to_team",
+     *          description="add_to_team of the team member",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              enum={"Data Science and Information Systems","Cybersecurity","Project Management","Research","MEAL","Marketing","Sales and Revenue","AI"}
      *          )
      *      ),
      *      @OA\Parameter(
@@ -387,7 +411,7 @@ class TeamController extends Controller
      *                  @OA\Property(property="nationality", type="string", example="American"),
      *                  @OA\Property(property="email", type="string", example="johndoe@example.com"),
      *                  @OA\Property(property="gender", type="string", example="Male"),
-     *                  @OA\Property(property="team", type="string", example="AI") // Added 'team' field
+     *                  @OA\Property(property="add_to_team", type="string", example="AI"),
      *                  @OA\Property(property="profile_picture", type="string", example="profile_pictures/default.jpg")
      *              ),
      *              @OA\Property(property="message", type="string", example="Team updated successfully")
@@ -428,7 +452,7 @@ class TeamController extends Controller
             'nationality' => 'required|string',
             'email' => 'required|email|unique:teams,email,' . $team_id . ',team_id',
             'gender' => 'required|in:Male,Female,Other',
-            'team' => 'required|in:Data Science and Information Systems,Cybersecurity,Project Management,Research,MEAL,Marketing,Sales and Revenue,AI', 
+            'add_to_team' => 'required|in:Data Science and Information Systems,Cybersecurity,Project Management,Research,MEAL,Marketing,Sales and Revenue,AI', 
         ]);
 
         $data = $request->all();
