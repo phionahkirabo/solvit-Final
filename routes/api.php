@@ -35,7 +35,7 @@ Route::prefix('hods')->middleware('hod')->group(function () {
     // route about tasks 
     Route::post('/tasks', [TaskController::class, 'store']); // Create task
     Route::get('/alltasks', [TaskController::class, 'index']); // List all tasks
-    Route::get('/tasks/{task_id}', [TaskController::class, 'show']); // Show a task
+    Route::get('/taskshow/{task_id}', [TaskController::class, 'show']); // Show a task
     Route::put('/tasks/{task_id}', [TaskController::class, 'update']); // Update a task
     Route::delete('/tasks/{task_id}', [TaskController::class, 'destroy']);
     // delete of comment
