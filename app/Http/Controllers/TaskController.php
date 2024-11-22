@@ -149,6 +149,65 @@ class TaskController extends Controller
         return response()->json($task, 201);
     }
 
+        /**
+     * @OA\Get(
+     *      path="/api/hods/tasks/{task_id}",
+     *      security={{"Bearer": {}}},
+     *      operationId="showTask",
+     *      tags={"Tasks"},
+     *      summary="Get a specific task by ID",
+     *      description="Authenticated HODs can retrieve a task by its ID, including task details, project details, and the assigned employee information.",
+     *    
+     *      @OA\Parameter(
+     *          name="task_id",
+     *          description="ID of the task to retrieve",
+     *          required=true, 
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      
+     *      @OA\Response(
+     *          response=200,
+     *          description="Task details",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="task_id", type="integer", example=1),
+     *              @OA\Property(property="task_name", type="string", example="Prepare Report"),
+     *              @OA\Property(property="description", type="string", example="Prepare the final project report."),
+     *              @OA\Property(property="start_date", type="string", format="date", example="2024-10-14"),
+     *              @OA\Property(property="due_date", type="string", format="date", example="2024-10-20"),
+     *              @OA\Property(property="status", type="string", example="In Progress"),
+     *              @OA\Property(
+     *                  property="project",
+     *                  type="object",
+     *                  @OA\Property(property="project_id", type="integer", example=2),
+     *                  @OA\Property(property="project_name", type="string", example="Annual Review")
+     *              ),
+     *              @OA\Property(
+     *                  property="employee",
+     *                  type="object",
+     *                  @OA\Property(property="employee_id", type="integer", example=3),
+     *                  @OA\Property(property="employee_name", type="string", example="John Doe")
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Task not found"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated"
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     * )
+     */
+
     // Show a task
     public function show($task_id)
     {

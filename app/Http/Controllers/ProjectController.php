@@ -43,7 +43,7 @@ class ProjectController extends Controller
      *      @OA\Parameter(
      *          name="project_id",
      *          description="ID of the project to retrieve",
-     *          required=true,
+     *          required=true, 
      *          in="path",
      *          @OA\Schema(
      *              type="integer"
