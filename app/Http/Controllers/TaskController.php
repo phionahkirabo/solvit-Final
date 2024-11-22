@@ -151,7 +151,8 @@ class TaskController extends Controller
 
         /**
      * @OA\Get(
-     *      path="/api/hods/tasks/{task_id}",
+     *      path="/api/hods/taskshow/{task_id}",
+     
      *      security={{"Bearer": {}}},
      *      operationId="showTask",
      *      tags={"Tasks"},

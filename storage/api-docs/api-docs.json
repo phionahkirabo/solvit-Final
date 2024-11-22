@@ -1449,6 +1449,107 @@
                 ]
             }
         },
+        "/api/hods/taskshow/{task_id}": {
+            "get": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Get a specific task by ID",
+                "description": "Authenticated HODs can retrieve a task by its ID, including task details, project details, and the assigned employee information.",
+                "operationId": "showTask",
+                "parameters": [
+                    {
+                        "name": "task_id",
+                        "in": "path",
+                        "description": "ID of the task to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Task details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "task_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "task_name": {
+                                            "type": "string",
+                                            "example": "Prepare Report"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "Prepare the final project report."
+                                        },
+                                        "start_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2024-10-14"
+                                        },
+                                        "due_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2024-10-20"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "In Progress"
+                                        },
+                                        "project": {
+                                            "properties": {
+                                                "project_id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "project_name": {
+                                                    "type": "string",
+                                                    "example": "Annual Review"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "employee": {
+                                            "properties": {
+                                                "employee_id": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                },
+                                                "employee_name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Task not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/hods/tasks/{task_id}": {
             "put": {
                 "tags": [
@@ -3453,6 +3554,10 @@
         {
             "name": "add task under hods middleware",
             "description": "add task under hods middleware"
+        },
+        {
+            "name": "Tasks",
+            "description": "Tasks"
         },
         {
             "name": "update task under Employee middleware",
